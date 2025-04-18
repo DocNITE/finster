@@ -37,7 +37,7 @@ public sealed partial class AttributesComponent : Component
     /// </summary>
     /// <param name="attributeValue">Attribute?</param>
     /// <returns></returns>
-    public int GetModifier(int attributeValue)
+    public static int GetModifier(int attributeValue)
     {
         return (attributeValue - BaseStatsPoint) / 2;
     }

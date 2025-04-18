@@ -47,6 +47,8 @@
   - type: StatusIcon
   - type: Attributes
   - type: Skills
+  #  stats:
+  #    Climbing: Basic
   - type: LanguageSpeaker # Einstein Engines. This component is required to support speech, although it does not define known languages.
   - type: RequireProjectileTarget
     active: False

@@ -25,6 +25,7 @@
   #- type: Warper
   - type: Climbable
     ignoreTiles: true
+    ignoreSkillCheck: true
     startClimbSound:
       collection: LadderUsing
     finishClimbSound:
@@ -45,6 +46,7 @@
   - type: Climbable
     descendDirection: Down
     ignoreTiles: true
+    ignoreSkillCheck: true
     startClimbSound:
       collection: LadderUsing
     finishClimbSound:
@@ -62,6 +64,7 @@
   - type: Climbable
     descendDirection: Up
     ignoreTiles: true
+    ignoreSkillCheck: true
     startClimbSound:
       collection: LadderUsing
     finishClimbSound:

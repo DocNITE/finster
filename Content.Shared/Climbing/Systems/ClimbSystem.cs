@@ -1,6 +1,7 @@
 using System.Numerics;
 using Content.KayMisaZlevels.Shared.Miscellaneous;
 using Content.KayMisaZlevels.Shared.Systems;
+using Content.Shared._Finster.Rulebook;
 using Content.Shared.ActionBlocker;
 using Content.Shared.Body.Systems;
 using Content.Shared.Buckle.Components;
@@ -24,6 +25,7 @@ using Content.Shared.Traits.Assorted.Components;
 using Content.Shared.Verbs;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Map;
+using Robust.Shared.Network;
 using Robust.Shared.Physics;
 using Robust.Shared.Physics.Collision.Shapes;
 using Robust.Shared.Physics.Components;
@@ -40,6 +42,7 @@ public sealed partial class ClimbSystem : VirtualController
 {
     [Dependency] private readonly IGameTiming _timing = default!;
     [Dependency] private readonly IMapManager _mapManager = default!;
+    [Dependency] private readonly INetManager _netManager = default!;
     [Dependency] private readonly ActionBlockerSystem _actionBlockerSystem = default!;
     [Dependency] private readonly DamageableSystem _damageableSystem = default!;
     [Dependency] private readonly FixtureSystem _fixtureSystem = default!;
@@ -54,6 +57,9 @@ public sealed partial class ClimbSystem : VirtualController
     [Dependency] private readonly SharedMapSystem _mapSys = default!;
     [Dependency] private readonly EntityLookupSystem _lookup = default!;
     [Dependency] private readonly TagSystem _tag = default!;
+    [Dependency] private readonly RolePlayDiceSystem _dice = default!;
+
+    public const string SkillClimbing = "Climbing";
 
     private const string ClimbingFixtureName = "climb";
     private const int ClimbingCollisionGroup = (int) (CollisionGroup.TableLayer | CollisionGroup.LowImpassable);
@@ -230,6 +236,7 @@ public sealed partial class ClimbSystem : VirtualController
             return true;
 
         // Should be cleared, before a new define for the descend coordinates
+        climbing.IgnoreSkillCheck = false;
         climbing.DescendCoords = null;
 
         var ev = new AttemptClimbEvent(user, entityToMove, climbable);
@@ -261,8 +268,26 @@ public sealed partial class ClimbSystem : VirtualController
             return;
 
         // Try to move player between Z levels, if descend coords is not null
-        if (component.DescendCoords is not null)
+        if (component.DescendCoords is not null && _netManager.IsServer)
         {
+            // If it is ladders or another objects - ignore skill checking
+            if (!component.IgnoreSkillCheck)
+            {
+                if (!_dice.TryGetSkill(uid, SkillClimbing, out var skillLevel))
+                {
+                    SendDescendFailureMessage(uid, args.Args.Used.Value, args.Args.Target.Value);
+                    return;
+                }
+
+                var result = _dice.Roll(SkillsComponent.GetDice(skillLevel), out var critical, count: 2);
+                if (critical == CriticalType.Failure ||
+                    critical != CriticalType.Success && result < 6)
+                {
+                    SendDescendFailureMessage(uid, args.Args.Used.Value, args.Args.Target.Value);
+                    return;
+                }
+            }
+
             DescendedClimb(uid, args.Args.Used.Value, args.Args.Target.Value, climbing: component);
             args.Handled = true;
             return;
@@ -270,6 +295,23 @@ public sealed partial class ClimbSystem : VirtualController
 
         Climb(uid, args.Args.User, args.Args.Target.Value, climbing: component);
         args.Handled = true;
+    }
+
+    private void SendDescendFailureMessage(EntityUid uid, EntityUid user, EntityUid climbable)
+    {
+        string selfMessage;
+
+        if (user == uid)
+        {
+            selfMessage = Loc.GetString("comp-climbable-user-climbs-failure", ("climbable", climbable));
+        }
+        else
+        {
+            selfMessage = Loc.GetString("comp-climbable-user-climbs-failure-force", ("moved-user", Identity.Entity(uid, EntityManager)),
+            ("climbable", climbable));
+        }
+
+        _popupSystem.PopupEntity(selfMessage, uid, user, PopupType.SmallCaution);
     }
 
     private void DescendedClimb(EntityUid uid, EntityUid user, EntityUid climbable, bool silent = false, ClimbingComponent? climbing = null,
@@ -472,9 +514,14 @@ public sealed partial class ClimbSystem : VirtualController
                 targetPosition: climbableXform.Coordinates.Position,
                 comp: climbing,
                 ignoreTiles: climbable.IgnoreTiles))
+        {
+            climbing.IgnoreSkillCheck = climbable.IgnoreSkillCheck;
             climbing.DescendCoords = targetEntityCoords;
+        }
         else
+        {
             args.Cancelled = true;
+        }
     }
 
     /// <summary>

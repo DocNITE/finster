@@ -56,6 +56,7 @@ public abstract class SharedMeleeWeaponSystem : EntitySystem
     [Dependency] private readonly StaminaSystem _stamina = default!;
     [Dependency] private readonly ContestsSystem _contests = default!;
     [Dependency] private readonly SharedTargetingSystem _targeting = default!; // WWDP
+    [Dependency] private readonly RolePlayDiceSystem _dice = default!;
 
     public const string SkillMartialArts = "MartialArts";
 
@@ -368,21 +369,9 @@ public abstract class SharedMeleeWeaponSystem : EntitySystem
                 // But we can do it with martial arts!
                 if (weaponUid == user)
                 {
-                    if (!TryComp<SkillsComponent>(user, out var skills) ||
-                        !_protoManager.TryIndex<SkillPrototype>(SkillMartialArts, out var skill))
-                        return false;
-
-                    var founded = false;
-                    foreach (var skillEntry in skills.Skills)
-                    {
-                        if (skillEntry.Key.Id == skill.ID)
-                        {
-                            founded = true;
-                            break;
-                        }
-                    }
-
-                    if (!founded)
+                    if (_dice.TryGetSkill(user, SkillMartialArts, out var skillLevel))
+                        break;
+                    else
                         return false;
                 }
 

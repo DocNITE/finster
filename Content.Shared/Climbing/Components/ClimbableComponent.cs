@@ -40,6 +40,9 @@ namespace Content.Shared.Climbing.Components
         [DataField]
         public ClimbDirection? DescendDirection;
 
+        [DataField]
+        public bool IgnoreSkillCheck;
+
         /// <summary>
         /// Should be used for ladders on descend.
         /// </summary>

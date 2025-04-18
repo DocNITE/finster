@@ -1,4 +1,5 @@
 using Robust.Shared.Player;
+using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 
 namespace Content.Shared._Finster.Rulebook;
@@ -12,10 +13,17 @@ namespace Content.Shared._Finster.Rulebook;
 public sealed class RolePlayDiceSystem : EntitySystem
 {
     [Dependency] private readonly IRobustRandom _random = default!;
+    [Dependency] private readonly IPrototypeManager _protoManager = default!;
+
+    private EntityQuery<SkillsComponent> _skillsQuery;
+    private EntityQuery<AttributesComponent> _attributesQuery;
 
     public override void Initialize()
     {
         base.Initialize();
+
+        _skillsQuery = GetEntityQuery<SkillsComponent>();
+        _attributesQuery = GetEntityQuery<AttributesComponent>();
     }
 
     /// <summary>
@@ -23,33 +31,41 @@ public sealed class RolePlayDiceSystem : EntitySystem
     /// </summary>
     /// <param name="diceType">The dice what should be thrown.</param>
     /// <param name="modifier">Apply modifiers.</param>
-    /// <param name="isCriticalSuccess"></param>
-    /// <param name="isCriticalFailure"></param>
+    /// <param name="critical"></param>
     /// <returns></returns>
     public int Roll(
-        Dice diceType,
-        out bool isCriticalSuccess,
-        out bool isCriticalFailure,
-        int modifier = 0)
+            Dice diceType,
+            out CriticalType critical,
+            int count = 1,
+            int modifier = 0)
     {
-        isCriticalSuccess = false;
-        isCriticalFailure = false;
+        critical = CriticalType.None;
+        if (count <= 0) return 0; // защита от невалидного количества костей
 
         var sides = (int) diceType;
-        var result = _random.Next(1, sides + 1);
+        int totalResult = 0;
+        bool hasCriticalSuccess = false;
+        bool hasCriticalFailure = false;
 
-        if (result == sides)
+        for (int i = 0; i < count; i++)
         {
-            isCriticalSuccess = true;
-            return result;
-        }
-        else if (result == 1) // critical fail
-        {
-            isCriticalFailure = true;
-            return result;
+            var result = _random.Next(1, sides + 1);
+            totalResult += result;
+
+            if (result == sides)
+                hasCriticalSuccess = true;
+            else if (result == 1)
+                hasCriticalFailure = true;
         }
 
-        return result + modifier;
+        if (hasCriticalSuccess && hasCriticalFailure)
+            critical = CriticalType.None;
+        else if (hasCriticalSuccess)
+            critical = CriticalType.Success;
+        else if (hasCriticalFailure)
+            critical = CriticalType.Failure;
+
+        return totalResult + modifier;
     }
 
     /// <summary>
@@ -78,6 +94,42 @@ public sealed class RolePlayDiceSystem : EntitySystem
 
         return true;
     }
+
+    public bool TryGetSkill(EntityUid uid, string id, out SkillLevel level)
+    {
+        // Only as basic. We should overwrite it by component.
+        level = SkillLevel.Weak;
+
+        if (!_skillsQuery.TryComp(uid, out var skills) ||
+            !_protoManager.TryIndex<SkillPrototype>(id, out var skill))
+            return false;
+
+        if (skills.Stats.TryGetValue(skill, out var skillLevel))
+        {
+            level = skillLevel;
+            return true;
+        }
+
+        /*
+        foreach (var skillEntry in skills.Skills)
+        {
+            if (skillEntry.Key.Id == skill.ID)
+            {
+                level = skillEntry.Value;
+                return true;
+            }
+        }
+        */
+
+        return false;
+    }
+}
+
+public enum CriticalType
+{
+    None,
+    Success,
+    Failure
 }
 
 /// <summary>

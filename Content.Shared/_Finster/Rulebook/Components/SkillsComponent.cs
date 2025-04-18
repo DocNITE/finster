@@ -12,14 +12,14 @@ public sealed partial class SkillsComponent : Component
 {
     [AutoNetworkedField]
     [ViewVariables(VVAccess.ReadWrite), DataField]
-    public Dictionary<ProtoId<SkillPrototype>, SkillLevel> Skills = new();
+    public Dictionary<ProtoId<SkillPrototype>, SkillLevel> Stats = new();
 
     /// <summary>
     ///  Take 2d(sides) by skill level.
     /// </summary>
     /// <param name="level">Skill level lol.</param>
     /// <returns>Sides for dice.</returns>
-    public Dice GetDiceSides(SkillLevel level)
+    public static Dice GetDice(SkillLevel level)
     {
         switch (level)
         {

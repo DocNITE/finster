@@ -52,6 +52,8 @@ public sealed partial class ClimbingComponent : Component
     /// </summary>
     public EntityCoordinates? DescendCoords;
 
+    public bool IgnoreSkillCheck;
+
     /// <summary>
     /// How fast the entity is moved when climbing.
     /// </summary>
