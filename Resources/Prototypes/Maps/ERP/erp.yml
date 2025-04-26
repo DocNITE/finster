@@ -1,0 +1,17 @@
+- type: gameMap
+  id: ERPWorld
+  mapName: ERP World
+  mapPath: /Maps/ERP/erp.yml
+  minPlayers: 0
+  stations:
+    Den:
+      stationProto: GigastructureStation
+      components:
+        - type: StationNameSetup
+          mapNameTemplate: "Den"
+        - type: StationJobs
+          overflowJobs:
+            - Passenger
+          availableJobs:
+          #civilian
+            Passenger: [ -1, -1 ]

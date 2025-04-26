@@ -1,18 +1,4 @@
 - type: soundCollection
   id: LobbyMusic
   files:
-    # Finster period (nov 2024 - feb 2025)
-    #- /Audio/Lobby/DreamWeb-Septimus.ogg
-    #- /Audio/Lobby/aphex_twin_19.ogg
-    #- /Audio/Lobby/fallen_kingdom.ogg
-    #- /Audio/Lobby/stray-bullet.ogg
-    #- /Audio/Lobby/Massive-Attack-Angel.ogg
-    # Pirate-z Bay period (march 2025 - april 2025)
-    #- /Audio/Lobby/DTPDANCE.ogg
-    #- /Audio/Lobby/GMGEO15.ogg
-    #- /Audio/Lobby/GMGEO14.ogg
-    #- /Audio/Lobby/GMGEO13.ogg
-    #- /Audio/Lobby/GMGEO7.ogg
-    # Finster: Deus ex machina (april 2025 - now)
-    #- /Audio/Lobby/emphasis.ogg
-    - /Audio/Lobby/resident-evil.ogg
+    - /Audio/Lobby/evacuation.ogg

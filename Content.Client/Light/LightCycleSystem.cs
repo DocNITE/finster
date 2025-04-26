@@ -22,7 +22,7 @@ public sealed class LightCycleSystem : SharedLightCycleSystem
             return;
 
         var mapQuery = AllEntityQuery<LightCycleComponent, MapLightComponent>();
-        while (mapQuery.MoveNext(out var uid,  out var cycle, out var map))
+        while (mapQuery.MoveNext(out var uid, out var cycle, out var map))
         {
             if (!cycle.Running)
                 continue;
@@ -38,7 +38,7 @@ public sealed class LightCycleSystem : SharedLightCycleSystem
                 .TotalSeconds;
 
             var color = GetColor((uid, cycle), cycle.OriginalColor, time);
-            map.AmbientLightColor = color;
+            SetColor(uid, color, map);
         }
     }
 }

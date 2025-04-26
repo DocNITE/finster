@@ -1,3 +1,4 @@
+using Content.KayMisaZlevels.Shared.Systems;
 using Content.Shared.Light.Components;
 using Robust.Shared.Map.Components;
 
@@ -25,7 +26,7 @@ public abstract class SharedLightCycleSystem : EntitySystem
     {
         if (TryComp(ent.Owner, out MapLightComponent? mapLight))
         {
-            mapLight.AmbientLightColor = ent.Comp.OriginalColor;
+            SetColor(ent.Owner, ent.Comp.OriginalColor, mapLight);
             Dirty(ent.Owner, mapLight);
         }
     }
@@ -37,6 +38,26 @@ public abstract class SharedLightCycleSystem : EntitySystem
 
         RaiseLocalEvent(entity, ref ev);
         Dirty(entity);
+    }
+
+    public void SetColor(EntityUid uid, Color color, MapLightComponent? mapLight = null)
+    {
+        if (!Resolve(uid, ref mapLight))
+            return;
+
+        mapLight.AmbientLightColor = color;
+
+        var zStackSystem = EntityManager.System<SharedZStackSystem>();
+
+        // Try to apply ambient color for multi-Z
+        if (!zStackSystem.TryGetZStack(uid, out var stack))
+            return;
+
+        foreach (var mapUid in stack.Value.Comp.Maps)
+        {
+            if (uid != mapUid && TryComp<MapLightComponent>(mapUid, out var zMapLight))
+                zMapLight.AmbientLightColor = color;
+        }
     }
 
     public static Color GetColor(Entity<LightCycleComponent> cycle, Color color, float time)

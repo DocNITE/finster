@@ -646,7 +646,7 @@
   #hudPositionX: -192
   hudPositionX: -544
   hudPositionY: 416
-  altHudPositionX: -224
+  altHudPositionX: -192
   altHudPositionY: 480
   isGeneric: false
 
@@ -772,7 +772,7 @@
   maxSeverity: 1
   hudPositionX: -576
   hudPositionY: 288
-  altHudPositionX: -192
+  altHudPositionX: -224
   altHudPositionY: 480
   isGeneric: false
 

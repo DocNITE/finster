@@ -8,7 +8,7 @@ public sealed partial class CCVars
         CVarDef.Create("finster_hud.theme", 0, CVar.ARCHIVE | CVar.CLIENTONLY);
 
     public static readonly CVarDef<int> HudType =
-        CVarDef.Create("finster_hud.type", 0, CVar.ARCHIVE | CVar.CLIENTONLY);
+        CVarDef.Create("finster_hud.type", 1, CVar.ARCHIVE | CVar.CLIENTONLY);
 
     public static readonly CVarDef<bool> HudCustomCursor =
         CVarDef.Create("finster_hud.custom_cursor", false, CVar.ARCHIVE | CVar.CLIENTONLY);

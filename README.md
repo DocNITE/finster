@@ -1,4 +1,4 @@
-# Finster: Deus Ex Machina
+# Finster
 
 Ролевая игра на основе [Space Station 14](https://github.com/space-wizards/space-station-14.git).
 Главная особенность - это упор в глубокий отыгрыш и полную переработку имеющихся механик из оригинальной игры.
