@@ -95,7 +95,7 @@ public sealed partial class MeleeWeaponSystem : SharedMeleeWeaponSystem
         {
             if (weapon.Attacking)
             {
-                RaisePredictiveEvent(new StopAttackEvent(GetNetEntity(weaponUid)));
+                RaiseNetworkEvent(new StopAttackEvent(GetNetEntity(weaponUid)));
             }
         }
 
@@ -172,13 +172,13 @@ public sealed partial class MeleeWeaponSystem : SharedMeleeWeaponSystem
             // WD EDIT START
             if (weapon.AltDisarm && weaponUid == entity && _intent.GetIntent(entity) == Intent.Disarm)
             {
-                RaisePredictiveEvent(new DisarmAttackEvent(GetNetEntity(target), GetNetCoordinates(coordinates)));
+                RaiseNetworkEvent(new DisarmAttackEvent(GetNetEntity(target), GetNetCoordinates(coordinates)));
                 return;
             }
 
             if (weaponUid == entity && _intent.GetIntent(entity) == Intent.Grab)
             {
-                RaisePredictiveEvent(new GrabAttackEvent(GetNetEntity(target), GetNetCoordinates(coordinates)));
+                RaiseNetworkEvent(new GrabAttackEvent(GetNetEntity(target), GetNetCoordinates(coordinates)));
                 return;
             }
             // WD EDIT END
@@ -189,7 +189,7 @@ public sealed partial class MeleeWeaponSystem : SharedMeleeWeaponSystem
                 return;
             }
 
-            RaisePredictiveEvent(new LightAttackEvent(GetNetEntity(target), GetNetEntity(weaponUid), GetNetCoordinates(coordinates)));
+            RaiseNetworkEvent(new LightAttackEvent(GetNetEntity(target), GetNetEntity(weaponUid), GetNetCoordinates(coordinates)));
         }
     }
 
@@ -259,7 +259,7 @@ public sealed partial class MeleeWeaponSystem : SharedMeleeWeaponSystem
         // This should really be improved. GetEntitiesInArc uses pos instead of bounding boxes.
         // Server will validate it with InRangeUnobstructed.
         var entities = GetNetEntityList(ArcRayCast(userPos, direction.ToWorldAngle(), component.Angle, distance, userXform.MapID, user).ToList());
-        RaisePredictiveEvent(new HeavyAttackEvent(GetNetEntity(meleeUid), entities.GetRange(0, Math.Min(component.MaxTargets, entities.Count)), GetNetCoordinates(coordinates)));
+        RaiseNetworkEvent(new HeavyAttackEvent(GetNetEntity(meleeUid), entities.GetRange(0, Math.Min(component.MaxTargets, entities.Count)), GetNetCoordinates(coordinates)));
     }
 
     private void OnMeleeLunge(MeleeLungeEvent ev)

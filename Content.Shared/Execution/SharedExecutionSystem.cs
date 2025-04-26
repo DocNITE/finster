@@ -220,8 +220,10 @@ public sealed class SharedExecutionSystem : EntitySystem
             var suicideGhostEvent = new SuicideGhostEvent(victim);
             RaiseLocalEvent(victim, suicideGhostEvent);
         }
-        else
-            _melee.AttemptLightAttack(attacker, weapon, meleeWeaponComp, victim);
+        // TODO: Fuck it, i have plans to refactor the execution. It should work not like this.
+        // Or... If we wanna, we should insert any item into mouth and push oh fuck oh fuck
+        //else
+        //    _melee.AttemptLightAttack(attacker, weapon, meleeWeaponComp, victim);
 
         _intent.SetIntent(attacker, prev ?? Intent.Help);
         entity.Comp.Executing = false;

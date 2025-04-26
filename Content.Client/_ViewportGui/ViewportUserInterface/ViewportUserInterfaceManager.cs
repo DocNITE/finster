@@ -122,6 +122,7 @@ public sealed class ViewportUserInterfaceManager : IViewportUserInterfaceManager
         EngineKeyFunctions.ShowDebugMonitors,
 
         // EE Based keys
+        ContentKeyFunctions.ToggleCombatMode,
         ContentKeyFunctions.LookUp,
         ContentKeyFunctions.FixedDirection,
         ContentKeyFunctions.IntentHelp,

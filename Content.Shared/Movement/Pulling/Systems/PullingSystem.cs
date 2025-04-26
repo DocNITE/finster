@@ -1043,8 +1043,8 @@ public sealed class PullingSystem : EntitySystem
             _ => throw new ArgumentOutOfRangeException(),
         };
         // Because Soft is disabled
-        if (puller.Comp.GrabStage == GrabStage.No)
-            nextStageAddition++;
+        //if (puller.Comp.GrabStage == GrabStage.No)
+        //    nextStageAddition++;
 
         var newStage = puller.Comp.GrabStage + nextStageAddition;
 
@@ -1241,8 +1241,8 @@ public enum GrabStage
 {
     No = 0,
     //Soft = 1,
-    Hard = 2,
-    Suffocate = 3,
+    Hard = 1,
+    Suffocate = 2,
 }
 
 public enum GrubStageDirection
