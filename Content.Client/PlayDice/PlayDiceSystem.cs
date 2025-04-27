@@ -1,9 +1,9 @@
-using Content.Shared.Dice;
+using Content.Shared.PlayDice;
 using Robust.Client.GameObjects;
 
-namespace Content.Client.Dice;
+namespace Content.Client.PlayDice;
 
-public sealed class DiceSystem : SharedDiceSystem
+public sealed class PlayDiceSystem : SharedPlayDiceSystem
 {
     protected override void UpdateVisuals(EntityUid uid, DiceComponent? die = null)
     {

@@ -16,7 +16,11 @@ public sealed class HeavyAttackEvent : AttackEvent
     /// </summary>
     public List<NetEntity> Entities;
 
-    public HeavyAttackEvent(NetEntity weapon, List<NetEntity> entities, NetCoordinates coordinates) : base(coordinates)
+    public HeavyAttackEvent(
+            NetEntity weapon,
+            List<NetEntity> entities,
+            NetCoordinates coordinates,
+            bool ignoreCooldown = false) : base(coordinates, ignoreCooldown)
     {
         Weapon = weapon;
         Entities = entities;

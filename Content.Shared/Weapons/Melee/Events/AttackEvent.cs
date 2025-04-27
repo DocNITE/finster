@@ -14,9 +14,15 @@ namespace Content.Shared.Weapons.Melee.Events
         /// </summary>
         public readonly NetCoordinates Coordinates;
 
-        protected AttackEvent(NetCoordinates coordinates)
+        /// <summary>
+        /// Ignore weapon cooldown and attack immediately.
+        /// </summary>
+        public readonly bool IgnoreCooldown = false;
+
+        protected AttackEvent(NetCoordinates coordinates, bool ignoreCooldown = false)
         {
             Coordinates = coordinates;
+            IgnoreCooldown = ignoreCooldown;
         }
     }
 

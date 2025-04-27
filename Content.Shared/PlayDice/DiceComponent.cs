@@ -2,9 +2,9 @@ using Robust.Shared.Audio;
 using Robust.Shared.GameStates;
 using Robust.Shared.Serialization;
 
-namespace Content.Shared.Dice;
+namespace Content.Shared.PlayDice;
 
-[RegisterComponent, NetworkedComponent, Access(typeof(SharedDiceSystem))]
+[RegisterComponent, NetworkedComponent, Access(typeof(SharedPlayDiceSystem))]
 [AutoGenerateComponentState(true)]
 public sealed partial class DiceComponent : Component
 {

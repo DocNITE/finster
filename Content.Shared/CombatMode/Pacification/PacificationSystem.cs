@@ -104,7 +104,7 @@ public sealed class PacificationSystem : EntitySystem
             _intent.SetCanDisarm(uid, false, intent);
 
         if (component.DisallowAllCombat)
-            _intent.SetIntent(uid, Intent.Harm, intent); // WD EDIT
+            _intent.SetIntent(uid, Intent.Help, intent); // WD EDIT
 
         _alertsSystem.ShowAlert(uid, component.PacifiedAlert);
     }

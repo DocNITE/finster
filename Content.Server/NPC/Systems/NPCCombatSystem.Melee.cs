@@ -25,6 +25,8 @@ public sealed partial class NPCCombatSystem
     {
         if (TryComp<IntentComponent>(uid, out var intent)) // WD EDIT
             _intent.SetIntent(uid, Intent.Help, intent);
+        if (TryComp<CombatModeComponent>(uid, out var combat))
+            _combat.SetInCombatMode(uid, false, combat);
 
         _steering.Unregister(uid);
     }
@@ -33,6 +35,8 @@ public sealed partial class NPCCombatSystem
     {
         if (TryComp<IntentComponent>(uid, out var intent)) // WD EDIT
             _intent.SetIntent(uid, Intent.Harm, intent);
+        if (TryComp<CombatModeComponent>(uid, out var combat))
+            _combat.SetInCombatMode(uid, true, combat);
     }
 
     private void UpdateMelee(float frameTime)

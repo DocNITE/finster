@@ -1,4 +1,5 @@
 using System.Numerics;
+using Content.Shared._Shitmed.Targeting;
 using Content.Shared.Damage;
 using Content.Shared.FixedPoint;
 using Robust.Shared.Audio;
@@ -93,3 +94,15 @@ public record struct GetMeleeAttackRateEvent(EntityUid Weapon, float Rate, float
 /// </summary>
 [ByRefEvent]
 public record struct GetHeavyDamageModifierEvent(EntityUid Weapon, FixedPoint2 DamageModifier, float Multipliers, EntityUid User);
+
+/// <summary>
+/// Raised on a melee weapon attack to trying dodge by target.
+/// </summary>
+[ByRefEvent]
+public record struct AttemptDodgeMeleeAttack(EntityUid Attacker, EntityUid Target, EntityUid Weapon, TargetBodyPart TargetPart, bool Handled = false);
+
+/// <summary>
+/// Raised on a melee weapon attack to block or parry the attack by target.
+/// </summary>
+[ByRefEvent]
+public record struct AttemptParryMeleeAttack(EntityUid Attacker, EntityUid Target, EntityUid Weapon, TargetBodyPart TargetPart, bool Handled = false);

@@ -29,6 +29,18 @@ public sealed class MeleeSoundSystem : EntitySystem
         _audio.PlayPvs(weaponComponent.SoundSwing, weaponUid);
     }
 
+    public void PlayParrySound(EntityUid targetUid, EntityUid weaponUid, MeleeWeaponComponent weaponComponent)
+    {
+        if (_net.IsClient)
+            return;
+
+        if (Deleted(targetUid))
+            return;
+
+        var coords = Transform(targetUid).Coordinates;
+        _audio.PlayPvs(weaponComponent.SoundParry, targetUid);
+    }
+
     /// <summary>
     /// Takes a "damageType" string as an argument and uses it to
     /// search one of the various Dictionaries in the MeleeSoundComponent

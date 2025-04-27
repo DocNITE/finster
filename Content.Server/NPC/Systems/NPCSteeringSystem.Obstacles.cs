@@ -165,6 +165,7 @@ public sealed partial class NPCSteeringSystem
                 if (_melee.TryGetWeapon(uid, out _, out var meleeWeapon) && meleeWeapon.NextAttack <= _timing.CurTime && TryComp<IntentComponent>(uid, out var intent))
                 {
                     _intent.SetIntent(uid, Intent.Harm, intent); // WD EDIT
+                    _combat.SetInCombatMode(uid, true);
                     var destructibleQuery = GetEntityQuery<DestructibleComponent>();
 
                     // TODO: This is a hack around grilles and windows.
@@ -182,6 +183,7 @@ public sealed partial class NPCSteeringSystem
                     }
 
                     _intent.SetIntent(uid, Intent.Help, intent); // WD EDIT
+                    _combat.SetInCombatMode(uid, false);
 
                     // Blocked or the likes?
                     if (!attackResult)

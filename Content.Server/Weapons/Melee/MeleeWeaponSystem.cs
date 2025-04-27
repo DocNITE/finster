@@ -36,6 +36,7 @@ using Content.Shared.FixedPoint;
 using Content.Shared.Damage.Components;
 using Content.Shared._Finster.Rulebook;
 using Robust.Shared.Prototypes;
+using Content.Shared.CombatMode;
 
 namespace Content.Server.Weapons.Melee;
 
@@ -51,7 +52,7 @@ public sealed class MeleeWeaponSystem : SharedMeleeWeaponSystem
     [Dependency] private readonly ContestsSystem _contests = default!;
     [Dependency] private readonly PullingSystem _pulling = default!; // WD EDIT
     [Dependency] private readonly SharedTargetingSystem _targeting = default!; // WWDP
-    [Dependency] private readonly RolePlayDiceSystem _dice = default!;
+    [Dependency] private readonly DiceSystem _dice = default!;
     [Dependency] private readonly IPrototypeManager _protoManager = default!;
     [Dependency] private readonly StaminaSystem _stamina = default!;
     [Dependency] private readonly SharedIntentSystem _intent = default!; // WD EDIT
@@ -367,17 +368,48 @@ public sealed class MeleeWeaponSystem : SharedMeleeWeaponSystem
 
     }
 
-    public void AttemptLightAttackMiss(EntityUid user, EntityUid weaponUid, MeleeWeaponComponent weapon, EntityCoordinates coordinates)
+    public void AttemptLightAttackMiss(
+            EntityUid user,
+            EntityUid weaponUid,
+            MeleeWeaponComponent weapon,
+            EntityCoordinates coordinates,
+            bool ignoreCooldown = false)
     {
-        AttemptAttack(user, weaponUid, weapon, new LightAttackEvent(null, GetNetEntity(weaponUid), GetNetCoordinates(coordinates)), null);
+        AttemptAttack(user, weaponUid, weapon, new LightAttackEvent(null, GetNetEntity(weaponUid), GetNetCoordinates(coordinates), ignoreCooldown), null);
     }
 
-    public bool AttemptLightAttack(EntityUid user, EntityUid weaponUid, MeleeWeaponComponent weapon, EntityUid target)
+    public bool AttemptLightAttack(
+            EntityUid user,
+            EntityUid weaponUid,
+            MeleeWeaponComponent weapon,
+            EntityUid target,
+            bool ignoreCooldown = false)
     {
         if (!TryComp(target, out TransformComponent? targetXform))
             return false;
 
-        return AttemptAttack(user, weaponUid, weapon, new LightAttackEvent(GetNetEntity(target), GetNetEntity(weaponUid), GetNetCoordinates(targetXform.Coordinates)), null);
+        return AttemptAttack(user, weaponUid, weapon, new LightAttackEvent(GetNetEntity(target), GetNetEntity(weaponUid), GetNetCoordinates(targetXform.Coordinates), ignoreCooldown), null);
+    }
+
+    public void AttemptHeavyAttackMiss(
+            EntityUid user,
+            EntityUid weaponUid,
+            MeleeWeaponComponent weapon,
+            EntityCoordinates coordinates,
+            bool ignoreCooldown = false)
+    {
+        AttemptAttack(user, weaponUid, weapon, new HeavyAttackEvent(GetNetEntity(weaponUid), new List<NetEntity>(), GetNetCoordinates(coordinates), ignoreCooldown), null);
+    }
+
+    public bool AttemptHeavyAttack(
+            EntityUid user,
+            EntityUid weaponUid,
+            MeleeWeaponComponent weapon,
+            List<NetEntity> targets,
+            EntityCoordinates coordinates,
+            bool ignoreCooldown = false)
+    {
+        return AttemptAttack(user, weaponUid, weapon, new HeavyAttackEvent(GetNetEntity(weaponUid), targets, GetNetCoordinates(coordinates), ignoreCooldown), null);
     }
 
     public bool AttemptDisarmAttack(EntityUid user, EntityUid weaponUid, MeleeWeaponComponent weapon, EntityUid target)
@@ -392,11 +424,16 @@ public sealed class MeleeWeaponSystem : SharedMeleeWeaponSystem
     /// Called when a windup is finished and an attack is tried.
     /// </summary>
     /// <returns>True if attack successful</returns>
-    private bool AttemptAttack(EntityUid user, EntityUid weaponUid, MeleeWeaponComponent weapon, AttackEvent attack, ICommonSession? session)
+    private bool AttemptAttack(
+            EntityUid user,
+            EntityUid weaponUid,
+            MeleeWeaponComponent weapon,
+            AttackEvent attack,
+            ICommonSession? session)
     {
         var curTime = Timing.CurTime;
 
-        if (weapon.NextAttack > curTime)
+        if (!attack.IgnoreCooldown && weapon.NextAttack > curTime)
             return false;
 
         if (!_intent.CanAttack(user)) // WD EDIT
@@ -567,53 +604,89 @@ public sealed class MeleeWeaponSystem : SharedMeleeWeaponSystem
         DoLunge(user, weapon, angle, localPos, animation);
     }
 
+    private void MissLightAttack(EntityUid user, EntityUid meleeUid, MeleeWeaponComponent component, DamageSpecifier damage)
+    {
+        // Leave IsHit set to true, because the only time it's set to false
+        // is when a melee weapon is examined. Misses are inferred from an
+        // empty HitEntities.
+        // TODO: This needs fixing
+        if (meleeUid == user)
+        {
+            AdminLogger.Add(LogType.MeleeHit,
+                LogImpact.Low,
+                $"{ToPrettyString(user):actor} melee attacked (light) using their hands and missed");
+        }
+        else
+        {
+            AdminLogger.Add(LogType.MeleeHit,
+                LogImpact.Low,
+                $"{ToPrettyString(user):actor} melee attacked (light) using {ToPrettyString(meleeUid):tool} and missed");
+        }
+        var missEvent = new MeleeHitEvent(new List<EntityUid>(), user, meleeUid, damage, null);
+        RaiseLocalEvent(meleeUid, missEvent);
+        MeleeSound.PlaySwingSound(user, meleeUid, component);
+    }
+
+    private bool TryDodgeAttack(EntityUid user, EntityUid? target, EntityUid weapon, TargetBodyPart targetPart)
+    {
+        if (Deleted(target))
+            return false;
+
+        var ev = new AttemptDodgeMeleeAttack(user, target.Value, weapon, targetPart);
+        RaiseLocalEvent(target.Value, ref ev);
+        return ev.Handled;
+    }
+
+    private bool TryParryAttack(EntityUid user, EntityUid? target, EntityUid weapon, TargetBodyPart targetPart)
+    {
+        if (Deleted(target))
+            return false;
+
+        var ev = new AttemptParryMeleeAttack(user, target.Value, weapon, targetPart);
+        RaiseLocalEvent(target.Value, ref ev);
+        return ev.Handled;
+    }
+
     private void DoLightAttack(EntityUid user, LightAttackEvent ev, EntityUid meleeUid, MeleeWeaponComponent component, ICommonSession? session)
     {
         // If I do not come back later to fix Light Attacks being Heavy Attacks you can throw me in the spider pit -Errant
         var damage = GetDamage(meleeUid, user, component) * GetHeavyDamageModifier(meleeUid, user, component);
         var target = GetEntity(ev.Target);
+        var weapon = GetEntity(ev.Weapon);
         var resistanceBypass = GetResistanceBypass(meleeUid, user, component);
 
+        // WWDP edit; bodypart targeting
+        TargetBodyPart targetPart;
+        if (TryComp<TargetingComponent>(user, out var targeting))
+            targetPart = targeting.Target;
+        else
+            targetPart = _targeting.GetRandomBodyPart();
+
+        // If dual mode is enabled - try use second hand
+        // TODO: Need make all modifiers for generic fights.
+        // And then we can add dual mode for weapons
+        //if (TryComp<CombatModeComponent>(user, out var combatMode) &&
+        //    combatMode.Style == CombatIntent.Dual)
+
         // For consistency with wide attacks stuff needs damageable.
-        if (!CanDoLightAttack(user, target, component, out var targetXform, session))
+        if (!CanDoLightAttack(user, target, component, out var targetXform, session) ||
+            TryDodgeAttack(user, target, weapon, targetPart))
         {
-            // Leave IsHit set to true, because the only time it's set to false
-            // is when a melee weapon is examined. Misses are inferred from an
-            // empty HitEntities.
-            // TODO: This needs fixing
-            if (meleeUid == user)
-            {
-                AdminLogger.Add(LogType.MeleeHit,
-                    LogImpact.Low,
-                    $"{ToPrettyString(user):actor} melee attacked (light) using their hands and missed");
-            }
-            else
-            {
-                AdminLogger.Add(LogType.MeleeHit,
-                    LogImpact.Low,
-                    $"{ToPrettyString(user):actor} melee attacked (light) using {ToPrettyString(meleeUid):tool} and missed");
-            }
-            var missEvent = new MeleeHitEvent(new List<EntityUid>(), user, meleeUid, damage, null);
-            RaiseLocalEvent(meleeUid, missEvent);
-            MeleeSound.PlaySwingSound(user, meleeUid, component);
+            MissLightAttack(user, meleeUid, component, damage);
             return;
         }
-
-        // Sawmill.Debug($"Melee damage is {damage.Total} out of {component.Damage.Total}");
-
-        // Raise event before doing damage so we can cancel damage if the event is handled
-        var hitEvent = new MeleeHitEvent(new List<EntityUid> { target.Value }, user, meleeUid, damage, null);
-        RaiseLocalEvent(meleeUid, hitEvent);
-
-        if (hitEvent.Handled)
-            return;
 
         var targets = new List<EntityUid>(1)
         {
             target.Value
         };
 
-        var weapon = GetEntity(ev.Weapon);
+        // Raise event before doing damage so we can cancel damage if the event is handled
+        var hitEvent = new MeleeHitEvent(targets, user, meleeUid, damage, null);
+        RaiseLocalEvent(meleeUid, hitEvent);
+
+        if (hitEvent.Handled)
+            return;
 
         // We skip weapon -> target interaction, as forensics system applies DNA on hit
         Interaction.DoContactInteraction(user, weapon);
@@ -622,13 +695,12 @@ public sealed class MeleeWeaponSystem : SharedMeleeWeaponSystem
         // somewhat messy scuffle. See also, heavy attacks.
         Interaction.DoContactInteraction(user, target);
 
-        // WWDP edit; bodypart targeting
-        TargetBodyPart? targetPart = null;
-
-        if (TryComp<TargetingComponent>(user, out var targeting))
-            targetPart = targeting.Target;
-        else
-            targetPart = _targeting.GetRandomBodyPart();
+        // Target can attempt to parry the attack, with using his skills and dice roll.
+        if (TryParryAttack(user, target, weapon, targetPart))
+        {
+            MeleeSound.PlayParrySound(target.Value, weapon, component);
+            return;
+        }
 
         // For stuff that cares about it being attacked.
         var attackedEvent = new AttackedEvent(meleeUid, user, targetXform.Coordinates, targetPart);
@@ -671,6 +743,27 @@ public sealed class MeleeWeaponSystem : SharedMeleeWeaponSystem
         }
     }
 
+    private void MissHeavyAttack(EntityUid user, EntityUid meleeUid, MeleeWeaponComponent component, DamageSpecifier damage, Vector2 direction)
+    {
+        if (meleeUid == user)
+        {
+            AdminLogger.Add(LogType.MeleeHit,
+                LogImpact.Low,
+                $"{ToPrettyString(user):actor} melee attacked (heavy) using their hands and missed");
+        }
+        else
+        {
+            AdminLogger.Add(LogType.MeleeHit,
+                LogImpact.Low,
+                $"{ToPrettyString(user):actor} melee attacked (heavy) using {ToPrettyString(meleeUid):tool} and missed");
+        }
+        var missEvent = new MeleeHitEvent(new List<EntityUid>(), user, meleeUid, damage, direction);
+        RaiseLocalEvent(meleeUid, missEvent);
+
+        // immediate audio feedback
+        MeleeSound.PlaySwingSound(user, meleeUid, component);
+    }
+
     private bool DoHeavyAttack(EntityUid user, HeavyAttackEvent ev, EntityUid meleeUid, MeleeWeaponComponent component, ICommonSession? session)
     {
         // TODO: This is copy-paste as fuck with DoPreciseAttack
@@ -700,29 +793,6 @@ public sealed class MeleeWeaponSystem : SharedMeleeWeaponSystem
         var damage = GetDamage(meleeUid, user, component);
         var entities = GetEntityList(ev.Entities);
 
-        if (entities.Count == 0)
-        {
-            if (meleeUid == user)
-            {
-                AdminLogger.Add(LogType.MeleeHit,
-                    LogImpact.Low,
-                    $"{ToPrettyString(user):actor} melee attacked (heavy) using their hands and missed");
-            }
-            else
-            {
-                AdminLogger.Add(LogType.MeleeHit,
-                    LogImpact.Low,
-                    $"{ToPrettyString(user):actor} melee attacked (heavy) using {ToPrettyString(meleeUid):tool} and missed");
-            }
-            var missEvent = new MeleeHitEvent(new List<EntityUid>(), user, meleeUid, damage, direction);
-            RaiseLocalEvent(meleeUid, missEvent);
-
-            // immediate audio feedback
-            MeleeSound.PlaySwingSound(user, meleeUid, component);
-
-            return true;
-        }
-
         // Naughty input
         if (entities.Count > component.MaxTargets)
         {
@@ -751,24 +821,29 @@ public sealed class MeleeWeaponSystem : SharedMeleeWeaponSystem
         var targets = new List<EntityUid>();
         var damageQuery = GetEntityQuery<DamageableComponent>();
 
+        // WWDP edit; bodypart targeting
+        TargetBodyPart targetPart;
+        if (TryComp<TargetingComponent>(user, out var targeting))
+            targetPart = targeting.Target;
+        else
+            targetPart = _targeting.GetRandomBodyPart();
+
         foreach (var entity in entities)
         {
             if (entity == user ||
-                !damageQuery.HasComponent(entity))
+                !damageQuery.HasComponent(entity) || // Can't deal damage to undamageable
+                TryDodgeAttack(user, entity, meleeUid, targetPart)) // If dodged, then dodged
                 continue;
 
             targets.Add(entity);
         }
 
-        // Sawmill.Debug($"Melee damage is {damage.Total} out of {component.Damage.Total}");
-
-        // WWDP edit; bodypart targeting
-        TargetBodyPart? targetPart = null;
-
-        if (TryComp<TargetingComponent>(user, out var targeting))
-            targetPart = targeting.Target;
-        else
-            targetPart = _targeting.GetRandomBodyPart();
+        // If there is no any targets
+        if (entities.Count == 0 || targets.Count == 0)
+        {
+            MissHeavyAttack(user, meleeUid, component, damage, direction);
+            return true;
+        }
 
         // Raise event before doing damage so we can cancel damage if the event is handled
         var hitEvent = new MeleeHitEvent(targets, user, meleeUid, damage, direction);
@@ -803,6 +878,13 @@ public sealed class MeleeWeaponSystem : SharedMeleeWeaponSystem
             if (!Blocker.CanAttack(user, entity, (weapon, component)))
             {
                 targets.RemoveAt(i);
+                continue;
+            }
+
+            // Target can attempt to parry the attack, with using his skills and dice roll.
+            if (TryParryAttack(user, entity, weapon, targetPart))
+            {
+                MeleeSound.PlayParrySound(entity, weapon, component);
                 continue;
             }
 

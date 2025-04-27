@@ -69,7 +69,7 @@ namespace Content.Shared.CombatMode
         ///     Stamin drain rate, when entity is in combat.
         /// </summary>
         [DataField, AutoNetworkedField]
-        public float StaminaDrainRate = 0.15f;
+        public float StaminaDrainRate = 0.3f;
 
         public EntityUid? StaminaDrainSource;
 

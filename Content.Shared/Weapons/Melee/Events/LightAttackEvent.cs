@@ -12,7 +12,11 @@ public sealed class LightAttackEvent : AttackEvent
     public readonly NetEntity? Target;
     public readonly NetEntity Weapon;
 
-    public LightAttackEvent(NetEntity? target, NetEntity weapon, NetCoordinates coordinates) : base(coordinates)
+    public LightAttackEvent(
+            NetEntity? target,
+            NetEntity weapon,
+            NetCoordinates coordinates,
+            bool ignoreCooldown = false) : base(coordinates, ignoreCooldown)
     {
         Target = target;
         Weapon = weapon;

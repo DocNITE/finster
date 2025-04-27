@@ -203,6 +203,12 @@ public sealed partial class MeleeWeaponComponent : Component
     public SoundSpecifier SoundNoDamage { get; set; } = new SoundCollectionSpecifier("WeakHit");
 
     /// <summary>
+    /// Plays when target is parried attack.
+    /// </summary>
+    [DataField, AutoNetworkedField]
+    public SoundSpecifier SoundParry { get; set; } = new SoundCollectionSpecifier("Parry");
+
+    /// <summary>
     ///     Arguments for the MeleeContestInteractions constructor
     /// </summary>
     [DataField]

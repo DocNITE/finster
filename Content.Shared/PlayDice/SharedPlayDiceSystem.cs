@@ -3,9 +3,9 @@ using Content.Shared.Interaction.Events;
 using Content.Shared.Throwing;
 using Robust.Shared.GameStates;
 
-namespace Content.Shared.Dice;
+namespace Content.Shared.PlayDice;
 
-public abstract class SharedDiceSystem : EntitySystem
+public abstract class SharedPlayDiceSystem : EntitySystem
 {
     public override void Initialize()
     {

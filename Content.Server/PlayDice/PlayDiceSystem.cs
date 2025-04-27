@@ -1,14 +1,14 @@
-using Content.Shared.Dice;
+using Content.Shared.PlayDice;
 using Content.Shared.Popups;
 using JetBrains.Annotations;
 using Robust.Shared.Audio;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Random;
 
-namespace Content.Server.Dice;
+namespace Content.Server.PlayDice;
 
 [UsedImplicitly]
-public sealed class DiceSystem : SharedDiceSystem
+public sealed class PlayDiceSystem : SharedPlayDiceSystem
 {
     [Dependency] private readonly IRobustRandom _random = default!;
     [Dependency] private readonly SharedAudioSystem _audio = default!;

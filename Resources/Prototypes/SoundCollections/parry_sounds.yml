@@ -1,0 +1,12 @@
+- type: soundCollection
+  id: Parry
+  files:
+  - /Audio/Effects/Parry1.ogg
+  - /Audio/Effects/Parry2.ogg
+  - /Audio/Effects/Parry3.ogg
+  - /Audio/Effects/Parry4.ogg
+  - /Audio/Effects/Parry5.ogg
+  - /Audio/Effects/Parry6.ogg
+  - /Audio/Effects/Parry7.ogg
+  - /Audio/Effects/Parry8.ogg
+  - /Audio/Effects/Parry9.ogg

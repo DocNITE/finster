@@ -57,7 +57,7 @@ public sealed partial class ClimbSystem : VirtualController
     [Dependency] private readonly SharedMapSystem _mapSys = default!;
     [Dependency] private readonly EntityLookupSystem _lookup = default!;
     [Dependency] private readonly TagSystem _tag = default!;
-    [Dependency] private readonly RolePlayDiceSystem _dice = default!;
+    [Dependency] private readonly DiceSystem _dice = default!;
 
     public const string SkillClimbing = "Climbing";
 
@@ -273,15 +273,15 @@ public sealed partial class ClimbSystem : VirtualController
             // If it is ladders or another objects - ignore skill checking
             if (!component.IgnoreSkillCheck)
             {
+                // Check skill known in character
                 if (!_dice.TryGetSkill(uid, SkillClimbing, out var skillLevel))
                 {
                     SendDescendFailureMessage(uid, args.Args.Used.Value, args.Args.Target.Value);
                     return;
                 }
 
-                var result = _dice.Roll(SkillsComponent.GetDice(skillLevel), out var critical, count: 2);
-                if (critical == CriticalType.Failure ||
-                    critical != CriticalType.Success && result < 6)
+                // Try roll skill
+                if (!_dice.RollSkill(out var critical, dice: SkillsComponent.GetDice(skillLevel)))
                 {
                     SendDescendFailureMessage(uid, args.Args.Used.Value, args.Args.Target.Value);
                     return;

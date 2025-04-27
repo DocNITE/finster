@@ -67,7 +67,7 @@ public partial class SharedBodySystem
     {
         _queryTargeting = GetEntityQuery<TargetingComponent>();
         SubscribeLocalEvent<BodyComponent, TryChangePartDamageEvent>(OnTryChangePartDamage);
-        SubscribeLocalEvent<BodyComponent, DamageModifyEvent>(OnBodyDamageModify);
+        //SubscribeLocalEvent<BodyComponent, DamageModifyEvent>(OnBodyDamageModify);
         SubscribeLocalEvent<BodyPartComponent, DamageModifyEvent>(OnPartDamageModify);
         SubscribeLocalEvent<BodyPartComponent, DamageChangedEvent>(OnDamageChanged);
     }
@@ -164,16 +164,16 @@ public partial class SharedBodySystem
         }
     }
 
+    /*
     private void OnBodyDamageModify(Entity<BodyComponent> bodyEnt, ref DamageModifyEvent args)
     {
-        return; // WWDP test
-
         if (args.TargetPart != null)
         {
             var (targetType, _) = ConvertTargetBodyPart(args.TargetPart.Value);
             args.Damage *= GetPartDamageModifier(targetType);
         }
     }
+    */
 
     private void OnPartDamageModify(Entity<BodyPartComponent> partEnt, ref DamageModifyEvent args)
     {

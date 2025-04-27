@@ -1,5 +1,6 @@
 using Content.Server.NPC.Components;
 using Content.Shared._White.Intent;
+using Content.Shared.CombatMode;
 using Content.Shared.Interaction;
 using Content.Shared.Weapons.Ranged.Components;
 using Content.Shared.Weapons.Ranged.Events;
@@ -12,10 +13,12 @@ namespace Content.Server.NPC.Systems;
 public sealed partial class NPCCombatSystem
 {
     [Dependency] private readonly SharedIntentSystem _intent = default!; // WD EDIT
+    [Dependency] private readonly SharedCombatModeSystem _combat = default!;
     [Dependency] private readonly RotateToFaceSystem _rotate = default!;
     [Dependency] private readonly MapSystem _map = default!;
 
     private EntityQuery<IntentComponent> _intentQuery; // WD EDIT
+    private EntityQuery<CombatModeComponent> _combatQuery; // WD EDIT
     private EntityQuery<NPCSteeringComponent> _steeringQuery;
     private EntityQuery<RechargeBasicEntityAmmoComponent> _rechargeQuery;
     private EntityQuery<PhysicsComponent> _physicsQuery;
@@ -32,6 +35,7 @@ public sealed partial class NPCCombatSystem
     private void InitializeRanged()
     {
         _intentQuery = GetEntityQuery<IntentComponent>(); // WD EDIT
+        _combatQuery = GetEntityQuery<CombatModeComponent>();
         _physicsQuery = GetEntityQuery<PhysicsComponent>();
         _rechargeQuery = GetEntityQuery<RechargeBasicEntityAmmoComponent>();
         _steeringQuery = GetEntityQuery<NPCSteeringComponent>();
@@ -44,15 +48,23 @@ public sealed partial class NPCCombatSystem
     private void OnRangedStartup(EntityUid uid, NPCRangedCombatComponent component, ComponentStartup args)
     {
         if (TryComp<IntentComponent>(uid, out var intent)) // WD EDIT
+        {
             _intent.SetIntent(uid, Intent.Harm, intent);
+            if (TryComp<CombatModeComponent>(uid, out var combat))
+                _combat.SetInCombatMode(uid, true, combat);
+        }
         else
+        {
             component.Status = CombatStatus.Unspecified;
+        }
     }
 
     private void OnRangedShutdown(EntityUid uid, NPCRangedCombatComponent component, ComponentShutdown args)
     {
         if (TryComp<IntentComponent>(uid, out var intent)) // WD EDIT
             _intent.SetIntent(uid, Intent.Help, intent);
+        if (TryComp<CombatModeComponent>(uid, out var combat))
+            _combat.SetInCombatMode(uid, false, combat);
     }
 
     private void UpdateRanged(float frameTime)
@@ -88,6 +100,8 @@ public sealed partial class NPCCombatSystem
 
             if (_intentQuery.TryGetComponent(uid, out var intent)) // WD EDIT
                 _intent.SetIntent(uid, Intent.Harm, intent);
+            if (_combatQuery.TryGetComponent(uid, out var combat))
+                _combat.SetInCombatMode(uid, true, combat);
 
             if (!_gun.TryGetGun(uid, out var gunUid, out var gun))
             {

@@ -40,6 +40,7 @@ using Content.Shared.Prying.Components;
 using Robust.Shared.Audio.Systems;
 using Content.Shared.Traits.Assorted.Components;
 using Content.Server.Abilities.Psionics;
+using Content.Shared.CombatMode;
 
 namespace Content.Server.Zombies
 {

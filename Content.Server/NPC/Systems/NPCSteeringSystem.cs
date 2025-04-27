@@ -68,6 +68,7 @@ public sealed partial class NPCSteeringSystem : SharedNPCSteeringSystem
     [Dependency] private readonly SharedPhysicsSystem _physics = default!;
     [Dependency] private readonly SharedTransformSystem _transform = default!;
     [Dependency] private readonly SharedIntentSystem _intent = default!;
+    [Dependency] private readonly SharedCombatModeSystem _combat = default!;
     [Dependency] private readonly SharedMapSystem _map = default!;
     [Dependency] private readonly IGameTiming Timing = default!;
     [Dependency] private readonly SharedPhysicsSystem PhysicsSystem = default!;

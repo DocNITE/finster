@@ -22,7 +22,7 @@ public class HUDAttributeStats : HUDTextureRect, IHUDDescription
     private string _fontPath = "/Fonts/Bedstead/Bedstead.otf";
     private Font _font;
 
-    private readonly RolePlayDiceSystem _rpSystem;
+    private readonly DiceSystem _rpSystem;
 
     /// <summary>
     /// Return current font path or set a new font with the path.
@@ -52,7 +52,7 @@ public class HUDAttributeStats : HUDTextureRect, IHUDDescription
         IoCManager.InjectDependencies(this);
 
         _font = new VectorFont(_cache.GetResource<FontResource>(_fontPath), Scale);
-        _rpSystem = _entityManager.System<RolePlayDiceSystem>();
+        _rpSystem = _entityManager.System<DiceSystem>();
 
         StaminaBar = new HUDAnimatedTextureRect();
         StaminaBar.SetFromSpriteSpecifier(_vpUIManager.GetThemeRsi("Stats/progress_bar.rsi", "stamina"));
