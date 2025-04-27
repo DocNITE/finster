@@ -54,7 +54,8 @@ public sealed class CombatModeSystem : SharedCombatModeSystem
     private void OnDodgeAttempt(EntityUid uid, CombatModeComponent component, ref AttemptDodgeMeleeAttack args)
     {
         // If target is not prepared for combat - ignore dodging
-        if (!component.IsInCombatMode)
+        if (!component.IsInCombatMode ||
+            component.DefenseStyle != DefenseMode.Dodge)
             return;
 
         int targetModifier = 0;
@@ -77,7 +78,8 @@ public sealed class CombatModeSystem : SharedCombatModeSystem
     private void OnParryAttempt(EntityUid uid, CombatModeComponent component, ref AttemptParryMeleeAttack args)
     {
         // If target is not prepared for combat - ignore dodging
-        if (!component.IsInCombatMode)
+        if (!component.IsInCombatMode ||
+            component.DefenseStyle != DefenseMode.Parry)
             return;
 
         // Can't parry bare hands
