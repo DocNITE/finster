@@ -27,6 +27,8 @@ public sealed partial class AttributesComponent : Component
 
     /// <summary>
     /// Contains ID of prototypes of buffs and debuffs on specific attributes.
+    /// But it is only specified for attributes. In most scenarios you should use
+    /// <seealso cref="StatusEffectPrototype"/>
     /// </summary>
     [DataField, ViewVariables(VVAccess.ReadOnly)]
     [AutoNetworkedField]

@@ -91,6 +91,18 @@ public sealed class CombatModeSystem : SharedCombatModeSystem
         int targetModifier = 0;
         int attackerModifier = 0;
 
+        // TODO: Aimed, fury, strong... I mean, need implement combat intents into the game lol.
+        // It is not difficult
+        // TODO 2: Also, add VV variables for Attirubtes's stats for apply from View Variables
+        // TODO 3: StatusEffects should affect on modifiers and attributes, instead of using attributes effect
+        // TODO 4: Modifiers based on TargetBodyPart:
+        // - Torso: modifier is 0
+        // - Hands, Legs, Head: Modifier is -3
+        // - Mouth, Eyes, Neck: Modifier is -6
+        // TODO 5: Add loging into chat, based on CombatLogSystem
+        // TODO 6: Make parryable component or add another variable
+        // Shields should not require the active hand
+
         // Apply dexterity modifier for target
         if (TryComp<AttributesComponent>(args.Target, out var targetAttributes) &&
             _dice.TryGetAttributePoints(args.Target, Attributes.Dexterity, out var targetDexPoints, targetAttributes))
