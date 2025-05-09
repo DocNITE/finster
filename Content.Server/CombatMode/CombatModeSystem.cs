@@ -68,8 +68,8 @@ public sealed class CombatModeSystem : SharedCombatModeSystem
 
         // Apply dexterity modifier for attacker
         if (TryComp<AttributesComponent>(args.Attacker, out var attackerAttributes) &&
-            _dice.TryGetAttributePoints(args.Attacker, Attributes.Dexterity, out var attackerDexPoints, attackerAttributes))
-            attackerModifier += AttributesComponent.GetModifier(attackerDexPoints);
+            _dice.TryGetAttributePoints(args.Attacker, Attributes.Reflex, out var attackerRefPoints, attackerAttributes))
+            attackerModifier += AttributesComponent.GetModifier(attackerRefPoints);
 
         // Roll
         args.Handled = !_dice.RollAttack(out var _, out var _, attackerModifier, targetModifier);
@@ -103,15 +103,15 @@ public sealed class CombatModeSystem : SharedCombatModeSystem
         // TODO 6: Make parryable component or add another variable
         // Shields should not require the active hand
 
-        // Apply dexterity modifier for target
+        // Apply reflex modifier for target
         if (TryComp<AttributesComponent>(args.Target, out var targetAttributes) &&
-            _dice.TryGetAttributePoints(args.Target, Attributes.Dexterity, out var targetDexPoints, targetAttributes))
-            targetModifier += AttributesComponent.GetModifier(targetDexPoints);
+            _dice.TryGetAttributePoints(args.Target, Attributes.Reflex, out var targetRefPoints, targetAttributes))
+            targetModifier += AttributesComponent.GetModifier(targetRefPoints);
 
-        // Apply dexterity modifier for attacker
+        // Apply reflex modifier for attacker
         if (TryComp<AttributesComponent>(args.Attacker, out var attackerAttributes) &&
-            _dice.TryGetAttributePoints(args.Attacker, Attributes.Dexterity, out var attackerDexPoints, attackerAttributes))
-            attackerModifier += AttributesComponent.GetModifier(attackerDexPoints);
+            _dice.TryGetAttributePoints(args.Attacker, Attributes.Reflex, out var attackerRefPoints, attackerAttributes))
+            attackerModifier += AttributesComponent.GetModifier(attackerRefPoints);
 
         // Roll
         args.Handled = !_dice.RollAttack(out var _, out var _, attackerModifier, targetModifier);
