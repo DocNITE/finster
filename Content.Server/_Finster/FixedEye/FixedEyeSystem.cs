@@ -65,7 +65,7 @@ public sealed class FixedEyeSystem : EntitySystem
     public void RefreshAlert(EntityUid uid, FixedEyeComponent? fixedEyeComp = null)
     {
         // Just checking
-        if (!Resolve(uid, ref fixedEyeComp))
+        if (!Resolve(uid, ref fixedEyeComp, false))
             return;
 
         var hasNoRotate = HasComp<NoRotateOnMoveComponent>(uid);
@@ -74,7 +74,7 @@ public sealed class FixedEyeSystem : EntitySystem
 
     public void Toggle(EntityUid uid, FixedEyeComponent? fixedEyeComp = null)
     {
-        if (!Resolve(uid, ref fixedEyeComp))
+        if (!Resolve(uid, ref fixedEyeComp, false))
             return;
 
         if (!HasComp<NoRotateOnMoveComponent>(uid))

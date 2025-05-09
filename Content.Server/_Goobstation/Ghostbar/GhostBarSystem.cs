@@ -19,7 +19,10 @@ using Content.Shared.Mindshield.Components;
 using Content.Shared.Players;
 using Content.Shared.Roles.Jobs;
 using Robust.Shared.Utility;
-using Robust.Shared.EntitySerialization; // Einstein Engines - use JobComponent
+using Robust.Shared.EntitySerialization;
+using Robust.Shared.Configuration;
+using Content.Shared.CCVar;
+using Content.Shared._Goobstation.CCVar; // Einstein Engines - use JobComponent
 
 namespace Content.Server._Goobstation.Ghostbar;
 
@@ -32,6 +35,7 @@ public sealed class GhostBarSystem : EntitySystem
     [Dependency] private readonly StationSpawningSystem _spawningSystem = default!;
     [Dependency] private readonly MindSystem _mindSystem = default!;
     [Dependency] private readonly IEntityManager _entityManager = default!;
+    [Dependency] private readonly IConfigurationManager _cfg = default!;
     // Einstein Engines start
     [Dependency] private readonly PlayTimeTrackingManager _playTimeTracking = default!;
     [Dependency] private readonly LoadoutSystem _loadout = default!;
@@ -59,12 +63,15 @@ public sealed class GhostBarSystem : EntitySystem
             _mapSystem.SetPaused(map.Comp., false);
         */
 
+        if (!_cfg.GetCVar(GoobCVars.GhostBarEnabled))
+            return;
+
         var options = new DeserializationOptions()
         {
             InitializeMaps = true
         };
 
-        _mapLoader.TryLoadMap(new ResPath(MapPath), out var map, out _, options: options);
+        _mapLoader.TryLoadMap(new ResPath(MapPath), out var _, out _, options: options);
     }
 
     public void SpawnPlayer(GhostBarSpawnEvent msg, EntitySessionEventArgs args)

@@ -216,7 +216,7 @@
     - RootSpeakTranslator
     - BasicGalaticCommonTranslatorImplanter
     - MofficTranslator
-    - N14MaterialCircuitry
+    #- N14MaterialCircuitry
     - VehicleWheelchairFolded # Goobstation
   - type: EmagLatheRecipes
     emagStaticRecipes:
@@ -299,7 +299,7 @@
     - LargeBeaker
     - Dropper
     - ClothingEyesGlassesChemical
-    - N14MaterialCircuitry
+    #- N14MaterialCircuitry
     dynamicRecipes:
     - PowerDrill
     - MiningDrill
@@ -502,7 +502,7 @@
     - ReagentGrinderIndustrialMachineCircuitboard
     - StasisBedMachineCircuitboard
     - CryoPodMachineCircuitboard
-    - N14MaterialCircuitry
+    #- N14MaterialCircuitry
     dynamicRecipes:
     - ThermomachineFreezerMachineCircuitBoard
     - HellfireFreezerMachineCircuitBoard

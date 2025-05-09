@@ -32,10 +32,11 @@ namespace Content.Server._White.Examine
                 { "mask", "mask-" },
                 { "neck", "neck-" },
                 { "ears", "ears-" },
-                { "jumpsuit", "jumpsuit-" },
-                { "pants", "pants-" },
+                { "uniform2", "uniform2-" },
+                { "uniform", "uniform-" },
                 { "outerClothing", "outer-" },
                 { "back", "back-" },
+                { "back2", "back2-"},
                 { "gloves", "gloves-" },
                 { "belt", "belt-" },
                 { "shoes", "shoes-" }

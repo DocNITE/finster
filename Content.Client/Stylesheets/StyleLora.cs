@@ -299,6 +299,10 @@ namespace Content.Client.Stylesheets
         public const string StyleClassFuckyWuckyBackground = "FuckyWuckyBackground";
         public const string StyleClassGayShitBackground = "GayShitBackground";
         public const string StyleClassLobbyGayBackground = "LobbyGayBackground";
+        public const string StyleClassLobbyOptionsButton = "LobbyOptionsButton";
+        public const string StyleClassLobbyCallVoteButton = "LobbyCallVoteButton";
+        public const string StyleClassLobbyAHelpButton = "LobbyAHelpButton";
+        public const string StyleClassLobbyLeaveButton = "LobbyLeaveButton";
 
 
         public const string StyleClassSliderRed = "Red";
@@ -828,6 +832,12 @@ namespace Content.Client.Stylesheets
             var directionIconQuestionTex = resCache.GetTexture("/Textures/Interface/VerbIcons/information.svg.192dpi.png");
             var directionIconHereTex = resCache.GetTexture("/Textures/Interface/VerbIcons/dot.svg.192dpi.png");
 
+            // lobby buttons icons
+            var optionsButtonIconTex = resCache.GetTexture("/Textures/Interface/VerbIcons/settings.svg.192dpi.png");
+            var callVoteButtonIconTex = resCache.GetTexture("/Textures/Interface/fist.svg.192dpi.png");
+            var ahelpButtonIconTex = resCache.GetTexture("/Textures/Interface/gavel.svg.192dpi.png");
+            var leaveButtonIconTex = resCache.GetTexture("/Textures/Interface/VerbIcons/close.svg.192dpi.png");
+
             Stylesheet = new Stylesheet(BaseRules.Concat(new[]
             {
                 Element().Class("monospace")
@@ -1123,6 +1133,16 @@ namespace Content.Client.Stylesheets
                 // Thin buttons (No padding nor vertical margin)
                 Element<ContainerButton>().Class(StyleClassStorageButton)
                     .Prop(ContainerButton.StylePropertyStyleBox, buttonStorage),
+
+                // Lobby buttons
+                Element<TextureButton>().Class(StyleClassLobbyOptionsButton)
+                    .Prop(TextureButton.StylePropertyTexture, optionsButtonIconTex),
+                Element<TextureButton>().Class(StyleClassLobbyCallVoteButton)
+                    .Prop(TextureButton.StylePropertyTexture, callVoteButtonIconTex),
+                Element<TextureButton>().Class(StyleClassLobbyAHelpButton)
+                    .Prop(TextureButton.StylePropertyTexture, ahelpButtonIconTex),
+                Element<TextureButton>().Class(StyleClassLobbyLeaveButton)
+                    .Prop(TextureButton.StylePropertyTexture, leaveButtonIconTex),
 
                 Element<ContainerButton>().Class(StyleClassStorageButton)
                     .Pseudo(ContainerButton.StylePseudoClassNormal)

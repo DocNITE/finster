@@ -112,9 +112,12 @@ public class WhiteLobbyTextButton : TextureButton
 
         RebuildTexture();
 
+        var fontMeasure = handle.GetDimensions(_font, _buttonText, 1) * UIScale;
+        var scaledSize = Size * UIScale;
+
         handle.DrawString(
             _font,
-            Vector2.Zero,
+            new Vector2((scaledSize.X / 2) - (fontMeasure.X / 2), (scaledSize.Y / 2) - (fontMeasure.Y / 2)),
             _buttonText!,
             UIScale,
             color

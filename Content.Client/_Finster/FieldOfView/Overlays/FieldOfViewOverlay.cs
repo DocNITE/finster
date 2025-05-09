@@ -35,6 +35,7 @@ public sealed class FieldOfViewOverlay : Overlay
 
     private EntityQuery<FieldOfViewComponent> _fovQuery;
     private EntityQuery<EyeComponent> _eyeQuery;
+    private EntityQuery<TransformComponent> _xformQuery;
 
     public FieldOfViewOverlay()
     {
@@ -44,6 +45,7 @@ public sealed class FieldOfViewOverlay : Overlay
 
         _fovQuery = _entManager.GetEntityQuery<FieldOfViewComponent>();
         _eyeQuery = _entManager.GetEntityQuery<EyeComponent>();
+        _xformQuery = _entManager.GetEntityQuery<TransformComponent>();
 
         ZIndex = DamageOverlay.DrawingDepth - 1;
     }
@@ -83,14 +85,35 @@ public sealed class FieldOfViewOverlay : Overlay
         FieldOfViewComponent fieldOfView,
         EyeComponent eyeComp)
     {
-        var playerRotation = playerTransform.WorldRotation; // + eyeComp.Rotation;
+        var playerRotation = playerTransform.WorldRotation;
         playerRotation = playerRotation.Reduced().FlipPositive();
 
         if (fieldOfView.Simple4DirMode)
         {
-            var rsiDirection = SpriteComponent.Layer.GetDirection(Robust.Shared.Graphics.RSI.RsiDirectionType.Dir4, playerRotation);
-            var targetDirection = rsiDirection.Convert();
-            playerRotation = targetDirection.ToAngle();
+            // Получаем поворот грида, на котором стоит игрок
+            if (playerTransform.GridUid is { } gridUid &&
+                _xformQuery.TryComp(gridUid, out var gridTransform))
+            {
+                var gridRotation = gridTransform.WorldRotation;
+
+                // Переводим угол в локальные координаты грида
+                var localPlayerRotation = (playerRotation - gridRotation).Reduced().FlipPositive();
+
+                // Определяем 4 направления относительно грида
+                var rsiDirection = SpriteComponent.Layer.GetDirection(Robust.Shared.Graphics.RSI.RsiDirectionType.Dir4, localPlayerRotation);
+                var targetDirection = rsiDirection.Convert();
+
+                // Возвращаем обратно в мировые координаты
+                playerRotation = (targetDirection.ToAngle() + gridRotation).Reduced();
+            }
+            /*
+            else
+            {
+                var rsiDirection = SpriteComponent.Layer.GetDirection(Robust.Shared.Graphics.RSI.RsiDirectionType.Dir4, playerRotation);
+                var targetDirection = rsiDirection.Convert();
+                playerRotation = targetDirection.ToAngle();
+            }
+            */
         }
 
         var blockedViewDir = fieldOfView.GetRotation(fieldOfView.Direction);

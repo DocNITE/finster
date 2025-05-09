@@ -21,7 +21,14 @@
     maleMask: UniformTop
     sprite: _NF/Clothing/Uniforms/punk_procedural.rsi
     clothingVisuals:
-      jumpsuit:
+      uniform2:
+      - state: base_torso_armless
+        map: [ "jumpsuit_top" ]
+      - state: base_leg_standard
+        map: [ "jumpsuit_bottom" ]
+      - state: mask_null
+        map: [ "jumpsuit_decor" ]
+      uniform:
       - state: base_torso_armless
         map: [ "jumpsuit_top" ]
       - state: base_leg_standard
@@ -117,7 +124,14 @@
     maleMask: UniformTop
     sprite: _NF/Clothing/Uniforms/punk_procedural.rsi
     clothingVisuals:
-      jumpsuit:
+      uniform2:
+      - state: base_torso_armless
+        map: [ "jumpsuit_top" ]
+      - state: base_leg_short
+        map: [ "jumpsuit_bottom" ]
+      - state: mask_null
+        map: [ "jumpsuit_decor" ]
+      uniform:
       - state: base_torso_armless
         map: [ "jumpsuit_top" ]
       - state: base_leg_short

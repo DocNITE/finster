@@ -74,7 +74,7 @@ public class HUDAttributeStats : HUDTextureRect, IHUDDescription
 
     public override void Draw(in ViewportUIDrawArgs args)
     {
-        if (!VisibleInTree)
+        if (!Visible)
             return;
 
         DrawProgressBars(args);

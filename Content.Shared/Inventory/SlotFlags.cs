@@ -16,8 +16,8 @@ public enum SlotFlags
     EARS = 1 << 3,
     MASK = 1 << 4,
     OUTERCLOTHING = 1 << 5,
-    TORSO = 1 << 6, // Shirts
-    INNERCLOTHING = 1 << 7, // Pants and legacy jumpsuits
+    UNDERCLOTHING = 1 << 6, // Shirts (Uniform2)
+    INNERCLOTHING = 1 << 7, // Pants and legacy jumpsuits (Uniform)
     NECK = 1 << 8,
     BACK = 1 << 9,
     BACK2 = 1 << 10,

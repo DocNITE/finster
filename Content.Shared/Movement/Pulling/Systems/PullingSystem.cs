@@ -321,6 +321,9 @@ public sealed class PullingSystem : EntitySystem
         if (!TryComp(pullerComp.Pulling, out PullableComponent? pullableComp))
             return;
 
+        if (pullerComp.GrabStage > GrabStage.No)
+            return;
+
         TryStopPull(pullerComp.Pulling.Value, pullableComp, uid);
     }
 
@@ -1042,9 +1045,6 @@ public sealed class PullingSystem : EntitySystem
             GrubStageDirection.Decrease => -1,
             _ => throw new ArgumentOutOfRangeException(),
         };
-        // Because Soft is disabled
-        //if (puller.Comp.GrabStage == GrabStage.No)
-        //    nextStageAddition++;
 
         var newStage = puller.Comp.GrabStage + nextStageAddition;
 

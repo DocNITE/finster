@@ -23,7 +23,8 @@ namespace Content.Client.Clothing;
 
 public sealed class ClientClothingSystem : ClothingSystem
 {
-    public const string Jumpsuit = "jumpsuit";
+    public const string Uniform2 = "uniform2";
+    public const string Uniform = "uniform";
 
     /// <summary>
     /// This is a shitty hotfix written by me (Paul) to save me from renaming all files.
@@ -37,8 +38,8 @@ public sealed class ClientClothingSystem : ClothingSystem
         {"ears", "EARS"},
         {"mask", "MASK"},
         {"outerClothing", "OUTERCLOTHING"},
-        {Jumpsuit, "INNERCLOTHING"},
-        {"pants", "INNERCLOTHING"},
+        {Uniform2, "INNERCLOTHING"},
+        {"uniform", "INNERCLOTHING"},
         {"neck", "NECK"},
         {"back", "BACKPACK"},
         {"back2", "BACKPACK"},
@@ -358,7 +359,7 @@ public sealed class ClientClothingSystem : ClothingSystem
             // in examine menu. So, i commented it.
             // We don't have plans to add monkeys into the game (with clothes),
             // so... i think it is unnecessary.
-            if (slot == Jumpsuit)
+            if (slot == Uniform2 || slot == Uniform)
                 layerData.Shader ??= "StencilDraw";
 
             if (inventorySlots.HiddenSlots.Contains(slot))

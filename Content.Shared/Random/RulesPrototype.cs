@@ -176,3 +176,13 @@ public sealed partial class CombatModeRule : RulesRule
     [DataField("state")]
     public bool State = false;
 }
+
+public sealed partial class OutOfArea : RulesRule
+{
+}
+
+public sealed partial class InArea : RulesRule
+{
+    [DataField("id")]
+    public string ID = "";
+}

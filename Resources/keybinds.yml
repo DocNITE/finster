@@ -602,8 +602,9 @@ binds:
   mod1: Shift
 - function: LookUp
   type: State
-  key: Space
+  key: MouseRight
   mod1: Shift
+  priority: -2
 - function: IntentHelp
   type: State
   key: Num1
@@ -656,6 +657,6 @@ binds:
 - function: OpenContextMenu
   type: State
   key: MouseRight
-  mod1: Shift
+  mod1: Alt
   canFocus: true
   priority: -2 # Before UseSecondary

@@ -21,7 +21,7 @@ public sealed partial class AttributesComponent : Component
         { Attributes.Dexterity, BaseStatsPoint },
         { Attributes.Intelligence, BaseStatsPoint },
         { Attributes.Endurance, BaseStatsPoint },
-        { Attributes.Perception, BaseStatsPoint },
+        { Attributes.Reflex, BaseStatsPoint },
         { Attributes.Willpower, BaseStatsPoint }
     };
 
@@ -67,8 +67,7 @@ public enum Attributes : byte
     Strength,
 
     /// <summary>
-    ///     Dodge attacks from the enemies! It help to deal aimed damage without
-    ///     missing attacks (in melee combat).
+    ///     Dodge attacks from the enemies! Affect on acrobatic movement.
     /// </summary>
     Dexterity,
 
@@ -84,8 +83,9 @@ public enum Attributes : byte
 
     /// <summary>
     ///     Can help to aim with ranged weapons and detected some trap.
+    ///     Affect on melee combat.
     /// </summary>
-    Perception,
+    Reflex,
 
     /// <summary>
     ///     It helps you to live. Reduce negative effects for mood and increase time for crit, before you can die.

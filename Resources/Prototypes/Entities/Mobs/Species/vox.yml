@@ -99,7 +99,12 @@
   - type: Inventory
     speciesId: vox
     displacements:
-      jumpsuit:
+      uniform2:
+        sizeMaps:
+          32:
+            sprite: Mobs/Species/Vox/displacement.rsi
+            state: jumpsuit
+      uniform:
         sizeMaps:
           32:
             sprite: Mobs/Species/Vox/displacement.rsi
@@ -147,7 +152,12 @@
   - type: Inventory
     speciesId: vox
     displacements:
-      jumpsuit:
+      uniform2:
+        sizeMaps:
+          32:
+            sprite: Mobs/Species/Vox/displacement.rsi
+            state: jumpsuit
+      uniform:
         sizeMaps:
           32:
             sprite: Mobs/Species/Vox/displacement.rsi

@@ -6,7 +6,7 @@ namespace Content.KayMisaZlevels.Server.Components;
 /// <summary>
 /// This is used for loading the world for the given client.
 /// </summary>
-[RegisterComponent, UnsavedComponent]
+[RegisterComponent]
 public sealed partial class ZLoaderComponent : Component
 {
     public ICommonSession? Target = default!;

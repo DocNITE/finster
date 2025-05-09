@@ -19,6 +19,7 @@ public class HUDSlotControl : HUDButton, IEntityControl
 {
     [Dependency] private readonly IUserInterfaceManager _uiManager = default!;
     [Dependency] private readonly IEntityManager _entManager = default!;
+    [Dependency] private readonly IViewportUserInterfaceManager _vpUIManager = default!;
 
     private Texture? _buttonTexture;
 
@@ -27,7 +28,7 @@ public class HUDSlotControl : HUDButton, IEntityControl
     public const string HoverNamePrefix = "slotbutton-";
 
     public HUDTextureRect BlockedRect { get; }
-    public HUDTextureRect HighlightRect { get; }
+    public HUDAnimatedTextureRect HighlightRect { get; }
 
     public EntityUid? Entity;
     EntityUid? IEntityControl.UiEntity => Entity;
@@ -100,7 +101,9 @@ public class HUDSlotControl : HUDButton, IEntityControl
         set
         {
             _highlightTexturePath = value;
-            HighlightRect.Texture = _uiManager.CurrentTheme.ResolveTextureOrNull(value)?.Texture;
+            if (value is null)
+                return;
+            HighlightRect.SetFromSpriteSpecifier(_vpUIManager.GetThemeRsi(value, "highlight"));
         }
     }
 
@@ -123,13 +126,13 @@ public class HUDSlotControl : HUDButton, IEntityControl
             Size = (DefaultButtonSize, DefaultButtonSize)
         });
 
-        AddChild(HighlightRect = new HUDTextureRect
+        AddChild(HighlightRect = new HUDAnimatedTextureRect
         {
             Visible = false,
             Size = (DefaultButtonSize, DefaultButtonSize)
         });
 
-        HighlightTexturePath = "slot_highlight_back";
+        HighlightTexturePath = "Slots/highlight.rsi";
         BlockedTexturePath = "blocked";
 
         OnKeyBindDown += OnButtonPressed;
@@ -140,13 +143,15 @@ public class HUDSlotControl : HUDButton, IEntityControl
     {
         var handle = args.ScreenHandle;
 
-        if (_buttonTexture is null || !VisibleInTree)
+        if (_buttonTexture is null || !Visible)
         {
             base.Draw(args);
             return;
         }
 
         handle.DrawTextureRect(_buttonTexture, new UIBox2(GlobalPosition, GlobalPosition + Size));
+
+        base.Draw(args);
 
         if (Entity is not null)
         {
@@ -161,8 +166,6 @@ public class HUDSlotControl : HUDButton, IEntityControl
                 Angle.Zero,
                 Direction.South);
         }
-
-        base.Draw(args);
     }
 
     public void SetEntity(EntityUid? ent)

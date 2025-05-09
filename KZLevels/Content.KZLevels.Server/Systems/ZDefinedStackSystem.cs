@@ -26,13 +26,29 @@ public sealed partial class ZDefinedStackSystem : EntitySystem
     {
         base.Initialize();
 
+        SubscribeLocalEvent<ZDefinedStackComponent, ComponentStartup>(OnStartup);
         SubscribeLocalEvent<ZDefinedStackComponent, MapInitEvent>(OnMapInit);
+    }
+
+    private void OnStartup(Entity<ZDefinedStackComponent> ent, ref ComponentStartup args)
+    {
+        ClearViewSubscribers(ent);
     }
 
     private void OnMapInit(Entity<ZDefinedStackComponent> initialMapUid, ref MapInitEvent args)
     {
         // If there is nothing tracker comp (like - round start, instead of mapping)
         LoadMap(initialMapUid, initialMapUid.Comp, initializeMaps: true);
+    }
+
+    private void ClearViewSubscribers(EntityUid mapUid)
+    {
+        var query = EntityQueryEnumerator<ZLoaderComponent>();
+        while (query.MoveNext(out var mapEnt, out var loaderComp))
+        {
+            if (Transform(mapEnt).ParentUid == mapUid)
+                QueueDel(mapEnt);
+        }
     }
 
     public bool LoadMap(EntityUid initialMapUid, ZDefinedStackComponent? defStackComp = null, bool initializeMaps = false)
@@ -97,6 +113,11 @@ public sealed partial class ZDefinedStackSystem : EntitySystem
 
         if (_mapLoader.TryLoadMap(path, out var map, out _, options: options))
         {
+            // Clear garbage PVS subscribes, because WizDen's is trans gays.
+            // I think they should die, by shatter they body by themselfs.
+            // Just kill yourself, WizDen, pls!
+            ClearViewSubscribers(map.Value);
+
             // Add to stack
             _zStack.AddToStack(map.Value, ref stackLoc);
 

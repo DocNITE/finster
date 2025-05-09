@@ -1,0 +1,94 @@
+- type: ingameMusic
+  id: CombatMode
+  sound:
+    params:
+      volume: -6
+    collection: MusicCombat
+  fadeIn: true
+  interruptable: true
+  rules: InCombatMode
+  minCooldownTime: 0
+  maxCooldownTime: 0
+  priority: 10
+
+- type: ingameMusic
+  id: VesselGeneral
+  sound:
+    params:
+      volume: -8
+    collection: MusicVesselGeneral
+  #fadeIn: true
+  interruptable: true
+  rules: OnGrid
+  priority: 1
+
+- type: ingameMusic
+  id: VesselMaintenance
+  sound:
+    params:
+      volume: -8
+    collection: MusicVesselMaintenance
+  fadeIn: true
+  interruptable: true
+  rules: InMaintenanceArea
+  priority: 2
+
+# General music, like as fallback
+- type: ingameMusic
+  id: General
+  sound:
+    params:
+      volume: -10
+    collection: MusicGeneral
+  rules: AlwaysTrue
+  interruptable: true
+  priority: 0
+
+### SOUNDS
+
+- type: soundCollection
+  id: MusicGeneral
+  files:
+    - /Audio/_Finster/Ambience/empty.ogg
+
+- type: soundCollection
+  id: MusicVesselGeneral
+  files:
+    - /Audio/Music/shipambience.ogg
+
+- type: soundCollection
+  id: MusicVesselMaintenance
+  files:
+    - /Audio/Music/maintenance.ogg
+
+- type: soundCollection
+  id: MusicCombat
+  files:
+    - /Audio/Music/Combat/Mega_Drive-Terror_Eyes.ogg
+
+### RULES
+
+- type: rules
+  id: InCombatMode
+  rules:
+    - !type:NearbyMusicSourceRule
+      state: false
+    - !type:CombatModeRule
+      state: true
+
+- type: rules
+  id: OnGrid
+  rules:
+    - !type:CombatModeRule
+      state: false
+    - !type:OutOfArea
+    - !type:GridInRangeRule
+      range: 3
+
+- type: rules
+  id: InMaintenanceArea
+  rules:
+    - !type:CombatModeRule
+      state: false
+    - !type:InArea
+      id: AreaMusicMaintenance

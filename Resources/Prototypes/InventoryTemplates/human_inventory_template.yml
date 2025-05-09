@@ -42,7 +42,7 @@
       hudWindowPos: 0,6
       altHudWindowPos: 3,2
       strippingWindowPos: 0,5
-      dependsOn: pants
+      dependsOn: uniform
       displayName: Pocket 1
       stripHidden: true
     - name: belt
@@ -101,25 +101,25 @@
       hudSlotGroup: Misc
       strippingWindowPos: 1,4
       displayName: Gloves
-    - name: jumpsuit
-      slotTexture: uniform
-      slotFlags: TORSO
+    - name: uniform2
+      slotTexture: uniform2
+      slotFlags: UNDERCLOTHING
       stripTime: 6
       uiWindowPos: 0,0
       hudWindowPos: 1,6
       altHudWindowPos: 1,1
       hudSlotGroup: Misc
       strippingWindowPos: 1,5
-      displayName: Jumpsuit
-    - name: pants
-      slotTexture: pants
+      displayName: Uniform 2
+    - name: uniform
+      slotTexture: uniform
       slotFlags: INNERCLOTHING
       stripTime: 6
       uiWindowPos: 0,0
       hudWindowPos: 1,7
       altHudWindowPos: 1,2
       strippingWindowPos: 1,6
-      displayName: Pants
+      displayName: Uniform
     # right
     - name: ears
       slotTexture: ears
@@ -173,7 +173,7 @@
       hudWindowPos: 2,6
       altHudWindowPos: 4,2
       strippingWindowPos: 2,5
-      dependsOn: pants
+      dependsOn: uniform
       displayName: Pocket 2
       stripHidden: true
     - name: shoes

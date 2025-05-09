@@ -14,4 +14,7 @@ public sealed partial class GoobCVars
         CVarDef.Create("finster_mech.gun_outside_mech", true, CVar.SERVER | CVar.REPLICATED);
 
     #endregion
+
+    public static readonly CVarDef<bool> GhostBarEnabled =
+        CVarDef.Create("finster_map.ghost_bar_enabled", false, CVar.SERVER | CVar.REPLICATED);
 }

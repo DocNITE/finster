@@ -1,0 +1,20 @@
+- type: entity
+  id: AreaMusicMaintenance
+  parent: MarkerBase
+  components:
+  - type: SetTileArea
+    color: "#F2C65E"
+  - type: Sprite
+    layers:
+    - state: green
+      shader: unshaded
+
+- type: entity
+  id: AreaRemove
+  parent: MarkerBase
+  components:
+  - type: RemoveTileArea
+  - type: Sprite
+    layers:
+    - state: red
+      shader: unshaded

@@ -47,6 +47,12 @@ public sealed partial class CCVars
         CVarDef.Create("finster_ambience.music_volume", 1.5f, CVar.ARCHIVE | CVar.CLIENTONLY);
 
     /// <summary>
+    /// Ingame music volume.
+    /// </summary>
+    public static readonly CVarDef<float> IngameMusicVolume =
+        CVarDef.Create("finster_music.volume", 1.5f, CVar.ARCHIVE | CVar.CLIENTONLY);
+
+    /// <summary>
     /// Lobby / round end music volume.
     /// </summary>
     public static readonly CVarDef<float> LobbyMusicVolume =

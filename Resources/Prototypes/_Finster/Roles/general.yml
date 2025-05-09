@@ -20,8 +20,8 @@
 - type: startingGear
   id: ScourgerGear
   equipment:
-    jumpsuit: FinsterClothingUniformJumpsuitGambeson
-    pants: FinsterClothingUniformPantsTrou
+    uniform2: FinsterClothingUniformJumpsuitGambeson
+    uniform: FinsterClothingUniformPantsTrou
     back: ClothingBackpackSatchelLeather
     shoes: FinsterClothingShoesLeatherShoes
 

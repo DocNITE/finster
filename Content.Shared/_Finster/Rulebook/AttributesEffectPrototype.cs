@@ -22,7 +22,7 @@ public sealed partial class AttributesEffectPrototype : IPrototype
         { Attributes.Dexterity, 0 },
         { Attributes.Intelligence, 0 },
         { Attributes.Endurance, 0 },
-        { Attributes.Perception, 0 },
+        { Attributes.Reflex, 0 },
         { Attributes.Willpower, 0 }
     };
 

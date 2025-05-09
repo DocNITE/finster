@@ -4,7 +4,7 @@
   abstract: true
   components:
   - type: Clothing
-    slots: [torso]
+    slots: [underclothing]
 
 - type: entity
   parent: FinsterClothingUniformBase

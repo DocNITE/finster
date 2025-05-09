@@ -1,7 +1,7 @@
 slotbutton-eyes = Eyes
 slotbutton-neck = Neck
-slotbutton-jumpsuit = Jumpsuit
-slotbutton-pants = Pants
+slotbutton-uniform2 = Uniform 2
+slotbutton-uniform = Uniform
 slotbutton-pocket1 = Pocket
 slotbutton-pocket2 = Pocket
 slotbutton-pocket3 = Pocket

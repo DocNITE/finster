@@ -110,7 +110,12 @@
     speciesId: harpy
     templateId: digitigrade
     displacements:
-      jumpsuit:
+      uniform2:
+        sizeMaps:
+          32:
+            sprite: Mobs/Species/Harpy/displacement.rsi
+            state: jumpsuit
+      uniform:
         sizeMaps:
           32:
             sprite: Mobs/Species/Harpy/displacement.rsi
@@ -154,7 +159,12 @@
     speciesId: harpy
     templateId: digitigrade
     displacements:
-      jumpsuit:
+      uniform2:
+        sizeMaps:
+          32:
+            sprite: Mobs/Species/Harpy/displacement.rsi
+            state: jumpsuit
+      uniform:
         sizeMaps:
           32:
             sprite: Mobs/Species/Harpy/displacement.rsi

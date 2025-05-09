@@ -91,6 +91,18 @@ public sealed class JumpingSystem : EntitySystem
             !Resolve(uid, ref jumpComp))
             return false;
 
+        /*
+        if (_parent.IsValid())
+                {
+                    // parent coords to world coords
+                    return Vector2.Transform(_localPosition, _entMan.GetComponent<TransformComponent>(ParentUid).WorldMatrix);
+                }
+                else
+                {
+                    return Vector2.Zero;
+                }
+        */
+
         var userTransf = Transform(uid);
         var direction = userTransf.WorldPosition - position;
         if (direction.Length() > jumpComp.JumpRange)

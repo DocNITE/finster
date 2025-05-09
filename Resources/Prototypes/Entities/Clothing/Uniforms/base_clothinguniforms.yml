@@ -236,7 +236,16 @@
   - type: Clothing
     sprite: Clothing/Uniforms/Envirosuits/custom.rsi
     clothingVisuals:
-      jumpsuit:
+      uniform2:
+      - state: equipped-INNERCLOTHING
+        color: "#FFFFFF"
+      - state: accent-equipped-INNERCLOTHING
+        color: "#FF0000"
+      - state: loweraccent-equipped-INNERCLOTHING
+        color: "#FF0000"
+      - state: soles-equipped-INNERCLOTHING
+        color: "#bababa" # Recommended default soles color
+      uniform:
       - state: equipped-INNERCLOTHING
         color: "#FFFFFF"
       - state: accent-equipped-INNERCLOTHING

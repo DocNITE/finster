@@ -16,7 +16,7 @@ public class HUDTextureButton : HUDButton
     {
         var handle = args.ScreenHandle;
 
-        if (Texture is null || !VisibleInTree)
+        if (Texture is null || !Visible)
         {
             base.Draw(args);
             return;

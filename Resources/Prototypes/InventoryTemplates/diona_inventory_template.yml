@@ -31,7 +31,7 @@
       stripTime: 3
       uiWindowPos: 0,1
       strippingWindowPos: 0,4
-      dependsOn: pants
+      dependsOn: uniform
       displayName: Pocket 1
       stripHidden: true
     - name: id
@@ -106,7 +106,7 @@
       stripTime: 3
       uiWindowPos: 2,1
       strippingWindowPos: 2,4
-      dependsOn: pants
+      dependsOn: uniform
       displayName: Pocket 2
       stripHidden: true
     - name: back

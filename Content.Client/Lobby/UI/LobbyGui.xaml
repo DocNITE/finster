@@ -22,49 +22,86 @@
                     <animatedBackground:AnimatedBackgroundControl Access="Public" Name="Background" VerticalExpand="True" HorizontalExpand="True"
                         Stretch="KeepAspectCentered" />
 
-                        <!-- Voting Popups -->
-                        <BoxContainer Orientation="Vertical" SeparationOverride="4" Name="VoteContainer"
-                                      Access="Public" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0 8" />
                         <!-- Left Main Menu -->
-                        <PanelContainer HorizontalAlignment="Left" Name="Center" VerticalAlignment="Center">
+                        <PanelContainer Name="Center"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Top"
+                                        HorizontalExpand="True"
+                                        VerticalExpand="True"
+                                        Margin="0 96 0 0">
+                            <PanelContainer.PanelOverride>
+                                <gfx:StyleBoxFlat BackgroundColor="#100F14"
+                                                    BorderColor="#282D31"
+                                                    BorderThickness="2 2 2 2"/>
+                            </PanelContainer.PanelOverride>
                             <BoxContainer Orientation="Vertical" HorizontalAlignment="Center"
-                                        VerticalAlignment="Center" Margin="40 0 0 150">
+                                        VerticalAlignment="Center" Margin="0 0 0 0">
                                 <buttons:WhiteLobbyTextButton Name="ReadyButton"
                                     Access="Public"
                                     ToggleMode="True"
                                     ButtonText="{Loc 'lobby-state-player-status-not-ready'}"
-                                    Margin="0 30 0 10" />
+                                    Margin="16 16 16 0" />
                                 <buttons:WhiteUICommandButton Command="observe" Name="ObserveButton"
                                     Access="Public"
                                     ButtonText="{Loc 'ui-lobby-observe-button'}"
                                     WindowType="{x:Type lobbyUi:ObserveWarningWindow}"
-                                    Margin="0 10 0 10" />
+                                    Margin="16 16 16 0" />
                                 <buttons:WhiteLobbyTextButton Name="CharacterSetupButton"
                                     Access="Public"
                                     ButtonText="{Loc 'lobby-character-preview-panel-character-setup-button'}"
-                                    Margin="0 10 0 10" />
+                                    Margin="16 16 16 0" />
+                                <controls:HLine Color="{x:Static style:StyleLora.LoraPurple}" Thickness="2" Access="Public" Margin="16 16 16 0" />
+                                <BoxContainer Orientation="Horizontal">
+                                    <TextureButton
+                                        Name="OptionsButton"
+                                        SetSize="32 32"
+                                        Access="Public"
+                                        StyleClasses="LobbyOptionsButton"
+                                        Margin="16 16 0 16"/>
+                                    <TextureButton
+                                        Name="CallVoteButton"
+                                        SetSize="32 32"
+                                        Access="Public"
+                                        StyleClasses="LobbyCallVoteButton"
+                                        Margin="16 16 0 16"/>
+                                    <TextureButton
+                                        Name="AHelpButton"
+                                        SetSize="32 32"
+                                        Access="Public"
+                                        StyleClasses="LobbyAHelpButton"
+                                        Margin="16 16 0 16"/>
+                                    <TextureButton
+                                        Name="LeaveButton"
+                                        SetSize="32 32"
+                                        Access="Public"
+                                        StyleClasses="LobbyLeaveButton"
+                                        Margin="16 16 16 16"/>
+                                </BoxContainer>
+                                <!-- OLD buttons from WhiteDream lobby
                                 <buttons:WhiteLobbyTextButton Name="OptionsButton"
                                     Access="Public"
                                     ButtonText="{Loc 'ui-lobby-options-button'}"
-                                    Margin="0 10 0 10" />
+                                    Margin="10 10 10 10" />
                                 <buttons:WhiteLobbyTextButton Name="CallVoteButton"
                                     Access="Public"
                                     ButtonText="{Loc 'ui-vote-menu-button'}"
-                                    Margin="0 10 0 10"/>
+                                    Margin="10 10 10 10"/>
                                 <buttons:WhiteLobbyTextButton Name="AHelpButton"
                                     Access="Public"
                                     ButtonText="{Loc 'ui-lobby-ahelp-button'}"
-                                    Margin="0 10 0 10" />
-                                <buttons:WhiteLobbyTextButton Name="ChangelogButton"
-                                    Access="Public"
-                                    ButtonText="{Loc 'ui-lobby-changelog-button'}"
-                                    Margin="0 10 0 10" />
+                                    Margin="10 10 10 10" />
                                 <buttons:WhiteLobbyTextButton Name="LeaveButton"
                                     Access="Public"
                                     ButtonText="{Loc 'ui-lobby-leave-button'}"
-                                    Margin="0 10 0 0" />
+                                    Margin="10 10 10 10" />
+                                -->
                             </BoxContainer>
                         </PanelContainer>
+
+                        <!-- Voting Popups -->
+                        <BoxContainer Orientation="Vertical" SeparationOverride="4" Name="VoteContainer"
+                                      Access="Public" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0 8" />
+
                         <!-- Left Top Panel
                         <PanelContainer StyleClasses="AngleRect" HorizontalAlignment="Left" Name="LeftSideTop"
                                         VerticalAlignment="Top">

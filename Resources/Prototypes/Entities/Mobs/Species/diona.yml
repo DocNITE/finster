@@ -124,7 +124,12 @@
   - type: Inventory
     templateId: diona
     femaleDisplacements:
-      jumpsuit:
+      uniform2:
+        sizeMaps:
+          32:
+            sprite: Mobs/Species/Human/displacement.rsi
+            state: jumpsuit-female
+      uniform:
         sizeMaps:
           32:
             sprite: Mobs/Species/Human/displacement.rsi
@@ -140,7 +145,12 @@
   - type: Inventory
     templateId: diona
     femaleDisplacements:
-      jumpsuit:
+      uniform2:
+        sizeMaps:
+          32:
+            sprite: Mobs/Species/Human/displacement.rsi
+            state: jumpsuit-female
+      uniform:
         sizeMaps:
           32:
             sprite: Mobs/Species/Human/displacement.rsi

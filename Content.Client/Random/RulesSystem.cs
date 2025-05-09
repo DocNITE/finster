@@ -3,6 +3,7 @@ using Content.Client.Instruments;
 using Content.Shared._Finster.TestHaus;
 using Content.Shared.Access.Components;
 using Content.Shared.Access.Systems;
+using Content.Shared.Area;
 using Content.Shared.Audio.Jukebox;
 using Content.Shared.CombatMode;
 using Content.Shared.Instruments;
@@ -22,6 +23,8 @@ public class RulesSystem : EntitySystem
     [Dependency] private readonly EntityLookupSystem _lookup = default!;
     [Dependency] private readonly SharedTransformSystem _transform = default!;
     [Dependency] private readonly EntityWhitelistSystem _whitelistSystem = default!;
+    [Dependency] private readonly AreaSystem _area = default!;
+
     public bool IsTrue(EntityUid uid, RulesPrototype rules)
     {
         var inRange = new HashSet<Entity<IComponent>>();
@@ -77,6 +80,30 @@ public class RulesSystem : EntitySystem
                     }
 
                     break;
+                }
+                case OutOfArea outOfArea:
+                {
+                    if (!TryComp<TransformComponent>(uid, out var xform) ||
+                        xform.GridUid == null)
+                        return false;
+
+                    var areaId = _area.GetAreaForEntity(uid);
+                    if (areaId == null)
+                        return true;
+                    else
+                        return false;
+                }
+                case InArea area:
+                {
+                    if (!TryComp<TransformComponent>(uid, out var xform) ||
+                        xform.GridUid == null)
+                        return false;
+
+                    var areaId = _area.GetAreaForEntity(uid);
+                    if (areaId == area.ID)
+                        return true;
+                    else
+                        return false;
                 }
                 case NearbyAccessRule access:
                 {

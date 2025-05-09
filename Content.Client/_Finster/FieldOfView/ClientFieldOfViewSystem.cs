@@ -163,9 +163,9 @@ public sealed class ClientFieldOfViewSystem : EntitySystem
             TransformComponent? targetTransform = null,
             EyeComponent? eyeComp = null)
     {
-        if (!Resolve(viewer, ref viewerTransform) ||
-            !Resolve(target, ref targetTransform) ||
-            !Resolve(viewer, ref eyeComp))
+        if (!Resolve(viewer, ref viewerTransform, false) ||
+            !Resolve(target, ref targetTransform, false) ||
+            !Resolve(viewer, ref eyeComp, false))
             return false;
 
         // Вычисляем направление от наблюдателя к цели
@@ -181,9 +181,30 @@ public sealed class ClientFieldOfViewSystem : EntitySystem
 
         if (simple4DirMode)
         {
-            var rsiDirection = SpriteComponent.Layer.GetDirection(Robust.Shared.Graphics.RSI.RsiDirectionType.Dir4, viewerAngle);
-            var targetDirection = rsiDirection.Convert();
-            viewerAngle = targetDirection.ToAngle();
+            // Получаем поворот грида, на котором стоит игрок
+            if (viewerTransform.GridUid is { } gridUid &&
+                _xformQuery.TryComp(gridUid, out var gridTransform))
+            {
+                var gridRotation = gridTransform.WorldRotation;
+
+                // Переводим угол в локальные координаты грида
+                var localPlayerRotation = (viewerAngle - gridRotation).Reduced().FlipPositive();
+
+                // Определяем 4 направления относительно грида
+                var rsiDirection = SpriteComponent.Layer.GetDirection(Robust.Shared.Graphics.RSI.RsiDirectionType.Dir4, localPlayerRotation);
+                var targetDirection = rsiDirection.Convert();
+
+                // Возвращаем обратно в мировые координаты
+                viewerAngle = (targetDirection.ToAngle() + gridRotation).Reduced();
+            }
+            /*
+            else
+            {
+                var rsiDirection = SpriteComponent.Layer.GetDirection(Robust.Shared.Graphics.RSI.RsiDirectionType.Dir4, viewerAngle);
+                var targetDirection = rsiDirection.Convert();
+                viewerAngle = targetDirection.ToAngle();
+            }
+            */
         }
 
         var angleToTarget = Math.Atan2(direction.Y, direction.X); // Угол до цели

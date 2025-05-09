@@ -35,7 +35,7 @@ public sealed partial class ContentAudioSystem
     private int _minAmbienceTime = 30; //TimeSpan.FromSeconds(0);
     private int _maxAmbienceTime = 60; //TimeSpan.FromSeconds(0);
 
-    private const float AmbientMusicFadeTime = 10f;
+    public const float AmbientMusicFadeTime = 10f;
     private static float _volumeSlider;
 
     // Don't need to worry about this being serializable or pauseable as it doesn't affect the sim.

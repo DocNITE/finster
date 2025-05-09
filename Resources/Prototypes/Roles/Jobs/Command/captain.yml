@@ -36,7 +36,7 @@
   subGear:
   - CaptainPlasmamanGear
   equipment:
-    jumpsuit: ClothingUniformJumpsuitCaptain
+    uniform: ClothingUniformJumpsuitCaptain
     back: ClothingBackpackCaptainFilled
     shoes: ClothingShoesBootsLaceup
     id: CaptainPDA
@@ -49,6 +49,6 @@
   id: CaptainPlasmamanGear
   parent: BasePlasmamanGear
   equipment:
-    jumpsuit: ClothingUniformEnvirosuitCaptain
+    uniform: ClothingUniformEnvirosuitCaptain
     head: ClothingHeadEnvirohelmCaptain
     gloves: ClothingHandsGlovesCaptain

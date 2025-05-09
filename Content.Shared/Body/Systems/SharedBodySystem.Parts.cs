@@ -1009,7 +1009,6 @@ public partial class SharedBodySystem
         {
             BodyPartType.Arm => new() { "wristRight", "wristLeft" },
             BodyPartType.Hand => new() { "gloves" },
-            BodyPartType.Leg => new() { "pants" },
             BodyPartType.Foot => new() { "shoes" },
             BodyPartType.Head => new() { "eyes", "ears", "head", "mask" },
             _ => new()
@@ -1023,7 +1022,6 @@ public partial class SharedBodySystem
         {
             "wristRight" or "wristLeft" => BodyPartType.Arm,
             "gloves" => BodyPartType.Hand,
-            "pants" => BodyPartType.Leg,
             "shoes" => BodyPartType.Foot,
             "eyes" or "ears" or "head" or "mask" => BodyPartType.Head,
             _ => null

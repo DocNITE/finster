@@ -1,6 +1,5 @@
 using Content.Shared.Damage;
 using Content.Shared.FixedPoint;
-using Content.Shared.Ghost;
 using Content.Shared.Mobs;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Mobs.Systems;
@@ -34,15 +33,11 @@ public sealed class DamageOverlayUiController : UIController
     private void OnPlayerAttach(LocalPlayerAttachedEvent args)
     {
         ClearOverlay();
-        if (EntityManager.TryGetComponent<MobStateComponent>(args.Entity, out var mobState))
-        {
+        if (!EntityManager.TryGetComponent<MobStateComponent>(args.Entity, out var mobState))
+            return;
+        if (mobState.CurrentState != MobState.Dead)
             UpdateOverlays(args.Entity, mobState);
-            AddMobOverlay(args.Entity, mobState);
-        }
-        else if (EntityManager.TryGetComponent<GhostComponent>(args.Entity, out var ghost) && ghost.EnableGhostOverlay)
-        {
-            AddGhostOverlay();
-        }
+        _overlayManager.AddOverlay(_overlay);
     }
 
     private void OnPlayerDetached(LocalPlayerDetachedEvent args)
@@ -65,18 +60,6 @@ public sealed class DamageOverlayUiController : UIController
         if (args.Target != _playerManager.LocalEntity)
             return;
         UpdateOverlays(args.Target, args.MobState, args.Damageable, args.Threshold);
-    }
-
-    private void AddMobOverlay(EntityUid uid, MobStateComponent mobState)
-    {
-        if (mobState.CurrentState != MobState.Dead)
-            UpdateOverlays(uid, mobState);
-        _overlayManager.AddOverlay(_overlay);
-    }
-
-    private void AddGhostOverlay()
-    {
-        _overlayManager.AddOverlay(_overlay);
     }
 
     private void ClearOverlay()

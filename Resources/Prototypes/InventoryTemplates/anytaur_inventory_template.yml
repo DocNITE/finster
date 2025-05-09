@@ -64,7 +64,7 @@
       stripTime: 2
       uiWindowPos: 0,3
       strippingWindowPos: 0,3
-      dependsOn: pants
+      dependsOn: uniform
       displayName: Pocket 1
       stripHidden: true
     - name: pocket2
@@ -74,7 +74,7 @@
       stripTime: 2
       uiWindowPos: 2,3
       strippingWindowPos: 2,3
-      dependsOn: pants
+      dependsOn: uniform
       displayName: Pocket 2
       stripHidden: true
     - name: suitstorage
