@@ -1,17 +1,17 @@
 # Ashlands
 - type: biomeTemplate
-  id: Ashlands
+  id: AranasDesert
   layers:
     - !type:BiomeDummyLayer
       id: Loot
     # Fill layer
     - !type:BiomeTileLayer
       threshold: -1
-      tile: FloorAshenSand
+      tile: FloorAsteroidSand
 
 # Ash caves
 - type: biomeTemplate
-  id: AshCaves
+  id: AranasCaves
   layers:
     - !type:BiomeEntityLayer
       threshold: 0.95
