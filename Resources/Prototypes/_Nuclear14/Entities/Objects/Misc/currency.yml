@@ -18,7 +18,7 @@
     - idcard
   - type: Storage
     grid:
-    - 0,0,2,1
+    - 0,0,2,0
     maxItemSize: Normal
     quickInsert: true
     areaInsert: true
@@ -108,7 +108,7 @@
     state: moneypouch
   - type: Stack
     count: 50
-    
+
 - type: entity
   parent: N14CurrencyCap
   id: N14CurrencyCap100
@@ -119,7 +119,7 @@
     state: moneybag
   - type: Stack
     count: 100
-    
+
 - type: entity
   parent: N14CurrencyCap
   id: N14CurrencyCap500
@@ -155,7 +155,7 @@
     layers:
     - state: prewar
       map: ["base"]
-      
+
 - type: stack
   id: PrewarMoney
   name: pre-war money
@@ -184,7 +184,7 @@
     state: prewar3
   - type: Stack
     count: 50
-    
+
 - type: entity
   parent: N14CurrencyPrewar
   id: N14CurrencyPrewarMoney100
@@ -195,7 +195,7 @@
     state: prewar3
   - type: Stack
     count: 100
-    
+
 - type: entity
   parent: N14CurrencyPrewar
   id: N14CurrencyPrewarMoney500
@@ -240,7 +240,7 @@
     layers:
     - state: prewar
       map: ["base"]
-      
+
 - type: stack
   id: NCRDollar
   name: NCR dollars
@@ -269,7 +269,7 @@
     state: ncr3
   - type: Stack
     count: 50
-    
+
 - type: entity
   parent: N14CurrencyNCRDollar
   id: N14CurrencyNCRDollar100
@@ -280,7 +280,7 @@
     state: ncr3
   - type: Stack
     count: 100
-    
+
 - type: entity
   parent: N14CurrencyNCRDollar
   id: N14CurrencyNCRDollar500
@@ -291,7 +291,7 @@
     state: ncr3
   - type: Stack
     count: 500
-    
+
 # Legion Aureus
 - type: entity
   parent: N14CurrencyCap
@@ -314,7 +314,7 @@
     layers:
     - state: aurelius3
       map: ["base"]
-      
+
 - type: stack
   id: LegionAureus
   name: legion aurei
@@ -343,7 +343,7 @@
     state: aurelius3
   - type: Stack
     count: 50
-    
+
 - type: entity
   parent: N14CurrencyLegionAureus
   id: N14CurrencyLegionAureus100
@@ -354,7 +354,7 @@
     state: aurelius3
   - type: Stack
     count: 100
-    
+
 # Legion Denarius
 - type: entity
   parent: N14CurrencyCap
@@ -377,7 +377,7 @@
     layers:
     - state: denarius3
       map: ["base"]
-      
+
 - type: stack
   id: LegionDenarius
   name: legion denarii
@@ -406,7 +406,7 @@
     state: denarius3
   - type: Stack
     count: 50
-    
+
 - type: entity
   parent: N14CurrencyLegionDenarius
   id: N14CurrencyLegionDenarius100

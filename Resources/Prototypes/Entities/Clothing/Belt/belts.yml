@@ -97,10 +97,8 @@
   - type: Clothing
     sprite: Clothing/Belt/ce.rsi
   - type: Storage
-    grid: # WWDP
-    - 0,0,3,1
-    - 5,0,7,1
-    - 9,0,12,1
+    grid:
+    - 0,0,6,0
     # TODO: Fill this out more.
     # whitelist: # WWDP no belt whitelists
     #   tags:
@@ -608,7 +606,7 @@
     sprite: Clothing/Belt/holster.rsi
   - type: Storage
     grid:
-    - 0,0,3,1
+    - 0,0,2,0
 
 - type: entity
   parent: ClothingBeltStorageBase
@@ -625,7 +623,7 @@
   - type: Storage
     maxItemSize: Huge
     grid:
-    - 0,0,3,3
+    - 0,0,3,0
     whitelist:
       components:
         - Gun
@@ -645,10 +643,8 @@
   id: ClothingBaseWebbing
   components:
   - type: Storage
-    grid: # 2x 3x2 pouches & 4x2 in the middle
-    - 0,0,2,1
-    - 4,0,7,1
-    - 9,0,11,1
+    grid:
+    - 0,0,5,0
   - type: EmitsSoundOnMove
     soundCollection:
       collection: FootstepTacticalWebbing
@@ -761,7 +757,7 @@
     sprite: Clothing/Belt/wand.rsi
   - type: Storage
     grid:
-    - 0,0,15,1
+    - 0,0,5,0
     whitelist:
       tags:
       - WizardWand

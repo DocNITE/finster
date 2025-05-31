@@ -3,6 +3,15 @@
 
 - type: entity
   parent: ClothingShoesBase
+  abstract: true
+  id: ClothingUnderBase
+  components:
+  - type: Clothing
+    slots:
+    - UNDERCLOTHING
+
+- type: entity
+  parent: ClothingUnderBase
   id: ClothingUnderSocksBee
   name: bee socks
   description: Make them loins buzz!
@@ -13,7 +22,7 @@
     sprite: Clothing/Under/Socks/bee.rsi
 
 - type: entity
-  parent: ClothingShoesBase
+  parent: ClothingUnderBase
   id: ClothingUnderSocksCoder
   name: coder socks
   description: It's time to code sisters!!11!

@@ -259,7 +259,7 @@
     sprite: _Nuclear14/Structures/Storage/Crates/woodencrates.rsi
   - type: Storage
     grid:
-    - 0,0,6,3
+    - 0,0,7,1
     maxItemSize: Huge
   - type: ContainerContainer
     containers:

@@ -2,7 +2,7 @@
   parent: ClothingBeltStorageBase
   id: ClothingBeltQuiver
   name: quiver
-  description: Can hold up to 15 arrows, and fits snug around your waist.
+  description: Can hold up to 14 arrows, and fits snug around your waist.
   components:
   - type: Sprite
     sprite: Clothing/Belt/quiver.rsi
@@ -13,7 +13,7 @@
   - type: Clothing
   - type: Storage
     grid:
-    - 0,0,7,3
+    - 0,0,6,1
     maxItemSize: Small
     whitelist:
       tags:

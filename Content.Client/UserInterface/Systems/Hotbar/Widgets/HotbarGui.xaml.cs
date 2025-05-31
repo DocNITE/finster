@@ -9,16 +9,12 @@ namespace Content.Client.UserInterface.Systems.Hotbar.Widgets;
 [GenerateTypedNameReferences]
 public sealed partial class HotbarGui : UIWidget
 {
-    public BoxContainer StorageContainer;
-
     public HotbarGui()
     {
         RobustXamlLoader.Load(this);
         var hotbarController = UserInterfaceManager.GetUIController<HotbarUIController>();
 
-        StorageContainer = _StorageContainer;
-
-        hotbarController.Setup(HandContainer, StoragePanel);
+        hotbarController.Setup(HandContainer);
         //LayoutContainer.SetGrowVertical(this, LayoutContainer.GrowDirection.Begin);
     }
 

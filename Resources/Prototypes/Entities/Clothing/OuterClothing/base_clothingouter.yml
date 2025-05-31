@@ -45,7 +45,7 @@
   components:
   - type: Storage
     grid:
-    - 0,0,3,2 # WWDP larger storage
+    - 0,0,1,0
   - type: ContainerContainer
     containers:
       storagebase: !type:Container

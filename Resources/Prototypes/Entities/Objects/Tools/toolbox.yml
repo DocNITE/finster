@@ -25,7 +25,7 @@
         variation: 0.125
     maxItemSize: Normal
     grid:
-    - 0,0,6,3
+    - 0,0,6,0
   - type: Item
     size: Ginormous
   - type: MeleeWeapon
@@ -147,7 +147,7 @@
   - type: Storage
     maxItemSize: Huge
     grid:
-    - 0,0,7,3
+    - 0,0,6,0
   - type: MeleeWeapon
     damage:
       types:

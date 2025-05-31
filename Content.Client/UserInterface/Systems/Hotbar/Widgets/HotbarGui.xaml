@@ -10,14 +10,6 @@
     Orientation="Vertical"
     HorizontalAlignment="Center">
     <BoxContainer Orientation="Vertical">
-        <BoxContainer Name="_StorageContainer"
-                      Access="Public"
-                      HorizontalAlignment="Center"
-                      Margin="0">
-            <storage:StorageContainer
-                Name="StoragePanel"
-                Visible="False"/>
-        </BoxContainer>
         <BoxContainer Orientation="Vertical" Name="Hotbar" HorizontalAlignment="Center">
             <hands:HandsContainer
                 Name="HandContainer"

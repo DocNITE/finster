@@ -19,7 +19,7 @@
   - type: Storage
     maxItemSize: Normal
     grid:
-    - 0,0,3,1
+    - 0,0,3,0
     whitelist:
       tags:
       - Soap
@@ -46,7 +46,7 @@
   - type: Storage
     maxItemSize: Normal
     grid:
-    - 0,0,3,1
+    - 0,0,3,0
     whitelist:
       tags:
       - Soap
@@ -85,7 +85,7 @@
       amount: 1
   - type: Storage
     grid:
-    - 0,0,4,3
+    - 0,0,4,1
     whitelist:
       components:
       - BodyPart

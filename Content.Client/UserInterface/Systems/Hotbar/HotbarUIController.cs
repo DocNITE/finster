@@ -33,13 +33,12 @@ public sealed class HotbarUIController : UIController
         ReloadHotbar();
     }
 
-    public void Setup(HandsContainer handsContainer, StorageContainer storageContainer)
+    public void Setup(HandsContainer handsContainer)
     {
         _inventory = UIManager.GetUIController<InventoryUIController>();
         _hands = UIManager.GetUIController<HandsUIController>();
         _storage = UIManager.GetUIController<StorageUIController>();
         _hands.RegisterHandContainer(handsContainer);
-        _storage.RegisterStorageContainer(storageContainer);
     }
 
     public void ReloadHotbar()
@@ -55,24 +54,6 @@ public sealed class HotbarUIController : UIController
             {
                 // Yes, this is dirty.
                 container.SlotGroup = container.SlotGroup;
-            }
-
-            // Move storage container on viewport screen
-            if (UIManager.ActiveScreen is SeparatedChatGameScreen)
-            {
-                var activeScreen = UIManager.ActiveScreen as SeparatedChatGameScreen;
-                var storageContainer = hotbar._StorageContainer;
-
-                storageContainer!.Parent!.RemoveChild(storageContainer);
-                activeScreen!.TopLeftContainer.AddChild(storageContainer);
-            }
-            else if (UIManager.ActiveScreen is OverlayChatGameScreen)
-            {
-                var activeScreen = UIManager.ActiveScreen as OverlayChatGameScreen;
-                var storageContainer = hotbar._StorageContainer;
-
-                storageContainer!.Parent!.RemoveChild(storageContainer);
-                activeScreen!.TopLeft.AddChild(storageContainer);
             }
         }
 

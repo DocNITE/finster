@@ -24,3 +24,6 @@ slotbutton-hand-left = Left Hand
 slotbutton-hand = Hand
 slotbutton-hand-switch = Switch Hands
 slotbutton-hand-right = Right Hand
+
+slotbutton-storage-empty = Storage Slot
+slotbutton-storage-close = Close

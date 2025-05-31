@@ -1,4 +1,4 @@
-# For directional 64x64 sprites below there is an entity for each main direction (south, east, west). 
+# For directional 64x64 sprites below there is an entity for each main direction (south, east, west).
 # If bounding boxes improve in future these can be simplified. For now this is required as rotating the sprite ruins the bounding box. - Peptide
 
 # Bookshelf bookshelves
@@ -45,7 +45,7 @@
   - type: Pullable
   - type: Storage
     grid:
-    - 0,0,9,3
+    - 0,0,6,1
     maxItemSize: Huge
   - type: UserInterface
     interfaces:
@@ -55,7 +55,7 @@
     containers:
       storagebase: !type:Container
   - type: InteractionOutline
-  
+
 - type: entity
   id: N14Bookshelf
   parent: N14BookshelfDirty
@@ -82,7 +82,7 @@
           book-4: ""
       - enum.DamageStateVisualLayers.Base:
           book-5: ""
-          
+
 - type: entity
   id: N14BookshelfDestroyed
   parent: N14BookshelfDirty
@@ -93,7 +93,7 @@
     sprite: _Nuclear14/Structures/Furniture/bookshelf.rsi
     layers:
       - state: bookshelf_3
-      
+
 # Normal Shelves
 - type: entity
   id: N14ShelfWood1
@@ -145,7 +145,7 @@
         - LowImpassable
   - type: Storage
     grid:
-    - 0,0,9,3
+    - 0,0,6,1
     maxItemSize: Huge
   - type: UserInterface
     interfaces:
@@ -155,7 +155,7 @@
     containers:
       storagebase: !type:Container
   - type: InteractionOutline
-      
+
 - type: entity
   parent: [ N14ShelfWood1, N14StorageFillDomestic ]
   id: N14LootShelfWood1
@@ -187,7 +187,7 @@
   - type: Transform
     anchored: true
     noRot: false
-        
+
 - type: entity
   parent: N14ShelfWood
   id: N14ShelfWoodAlt
@@ -195,7 +195,7 @@
   components:
   - type: Sprite
     state: wood_shelf-alt
-    
+
 - type: entity
   parent: N14ShelfWood
   id: N14ShelfWoodBig
@@ -203,7 +203,7 @@
   components:
   - type: Sprite
     state: wood_shelf_big
-    
+
 - type: entity
   parent: N14ShelfWood
   id: N14ShelfWoodShowcase
@@ -214,7 +214,7 @@
     sprite: _Nuclear14/Structures/Furniture/64x64_furniture.rsi
     snapCardinals: true
     state: showcase
-    
+
 - type: entity
   parent: N14ShelfWood
   id: N14ShelfWoodStand
@@ -235,7 +235,7 @@
         layer:
         - MidImpassable
         - LowImpassable
-    
+
 - type: entity
   parent: N14ShelfWood
   id: N14ShelfWoodStandSmall
@@ -249,14 +249,14 @@
       fix1:
         shape:
           !type:PhysShapeAabb
-          bounds: "0.1,-0.05,0.9,0.2"  
+          bounds: "0.1,-0.05,0.9,0.2"
         density: 60
         mask:
         - MachineMask
         layer:
         - MidImpassable
         - LowImpassable
-    
+
 - type: entity
   parent: N14ShelfWood
   id: N14ShelfWoodClothesRack
@@ -265,7 +265,7 @@
   components:
   - type: Sprite
     state: clothing_rack
-    
+
 # Metal Shelves
 - type: entity
   parent: N14ShelfWood
@@ -303,8 +303,8 @@
             max: 1
       - !type:DoActsBehavior
         acts: [ "Destruction" ]
-        
-        
+
+
 - type: entity
   parent: N14ShelfMetal
   id: N14ShelfMetalShop

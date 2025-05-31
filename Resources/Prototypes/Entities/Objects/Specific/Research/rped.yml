@@ -16,7 +16,7 @@
   - type: PartExchanger
   - type: Storage
     grid:
-    - 0,0,15,5
+    - 0,0,4,1
     quickInsert: true
     areaInsert: true
     whitelist:

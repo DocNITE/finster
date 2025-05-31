@@ -39,7 +39,7 @@
         acts: ["Destruction"]
   - type: Storage
     grid:
-    - 0,0,4,3
+    - 0,0,3,0
     maxItemSize: Small
     whitelist:
       tags:

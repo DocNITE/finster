@@ -20,7 +20,7 @@
     size: Small
   - type: Storage
     grid:
-    - 0,0,3,1
+    - 0,0,6,0
     whitelist:
       tags:
       - Dice
@@ -35,4 +35,4 @@
     state: magicdicebag
   - type: Storage
     grid:
-    - 0,0,4,3
+    - 0,0,7,0
