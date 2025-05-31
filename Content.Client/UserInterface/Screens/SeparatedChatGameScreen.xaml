@@ -43,7 +43,7 @@
                 </BoxContainer>
             </LayoutContainer>
         </BoxContainer>
-        <PanelContainer HorizontalExpand="True" MinWidth="350">
+        <PanelContainer HorizontalExpand="True" MinWidth="400">
             <PanelContainer.PanelOverride>
                 <graphics:StyleBoxFlat BackgroundColor="#100F14"
                                        BorderColor="#282D31"

@@ -19,7 +19,7 @@
     sound: /Audio/_White/Equip/clothingrustle2.ogg
   - type: Storage
     grid:
-    - 0,0,6,3
+    - 0,0,6,0
     maxItemSize: Huge
   - type: ContainerContainer
     containers:

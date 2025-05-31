@@ -192,7 +192,8 @@ public abstract class SharedItemSystem : EntitySystem
         if (!Resolve(uid, ref uid.Comp))
             return new Box2i[] { };
 
-        return uid.Comp.Shape ?? GetSizePrototype(uid.Comp.Size).DefaultShape;
+        //return uid.Comp.Shape ?? GetSizePrototype(uid.Comp.Size).DefaultShape;
+        return GetSizePrototype(uid.Comp.Size).DefaultShape;
     }
 
     /// <summary>
@@ -200,7 +201,8 @@ public abstract class SharedItemSystem : EntitySystem
     /// </summary>
     public IReadOnlyList<Box2i> GetItemShape(ItemComponent component)
     {
-        return component.Shape ?? GetSizePrototype(component.Size).DefaultShape;
+        //return component.Shape ?? GetSizePrototype(component.Size).DefaultShape;
+        return GetSizePrototype(component.Size).DefaultShape;
     }
 
     /// <summary>
