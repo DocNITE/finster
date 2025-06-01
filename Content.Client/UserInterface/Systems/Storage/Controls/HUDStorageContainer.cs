@@ -11,13 +11,15 @@ using Robust.Client.UserInterface;
 
 namespace Content.Client.UserInterface.Systems.Storage.Controls;
 
-public class HUDStorageContainer : HUDControl
+public class HUDStorageContainer : HUDBoxContainer
 {
     [Dependency] private readonly IEntityManager _entity = default!;
 
     public EntityUid? StorageEntity;
 
     public bool IsOpen => Visible;
+
+    public HUDGameplayType StorageStyle = HUDGameplayType.Lifeweb;
 
     private StorageUIController _controller;
 
@@ -56,7 +58,6 @@ public class HUDStorageContainer : HUDControl
 
         var boundingGrid = storageComp.Grid.GetBoundingBox();
         var size = HUDItemGridControl.DefaultButtonSize;
-        var lastestPosition = new Vector2i(0, 0);
 
         DisposeAllChildren();
 
@@ -66,6 +67,9 @@ public class HUDStorageContainer : HUDControl
             {
                 var control = new HUDItemGridControl();
                 var currentPosition = new Vector2i(x, y);
+                var uiPosition = new Vector2i(x, y);
+                if (StorageStyle == HUDGameplayType.Interbay)
+                    uiPosition = new Vector2i(y, x); // Inverted :p
 
                 foreach (var (itemEnt, itemPos) in storageComp.StoredItems)
                 {
@@ -73,23 +77,29 @@ public class HUDStorageContainer : HUDControl
                         continue;
 
                     control.Entity = itemEnt;
+                    var metadata = IoCManager.Resolve<IEntityManager>().GetComponent<MetaDataComponent>(itemEnt);
+                    control.Name = metadata.EntityName;
                 }
 
-                control.Position = currentPosition * size;
+                control.Position = uiPosition * size;
                 control.GridPosition = currentPosition;
                 control.OnKeyBindDown += (args) =>
                 {
                     _controller.ItemInteraction(args, control);
                 };
                 AddChild(control);
-
-                lastestPosition = currentPosition;
             }
         }
 
+        // Update container size for next calculation
+        UpdateSize();
+
         // There need add close button
         var closeButton = new HUDStorageCloseControl();
-        closeButton.Position = (EyeManager.PixelsPerMeter * (boundingGrid.Right + 1), 0);
+        if (StorageStyle == HUDGameplayType.Interbay)
+            closeButton.Position = (0, Size.Y);
+        else
+            closeButton.Position = (Size.X, 0);
         closeButton.OnPressed += (args) =>
         {
             Close();

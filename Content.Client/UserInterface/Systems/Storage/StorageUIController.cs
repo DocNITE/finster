@@ -16,11 +16,13 @@ using Content.Shared.Item;
 using Content.Shared.Storage;
 using Robust.Client.Graphics;
 using Robust.Client.Input;
+using Robust.Client.Player;
 using Robust.Client.UserInterface;
 using Robust.Client.UserInterface.Controllers;
 using Robust.Client.UserInterface.Controls;
 using Robust.Shared.Configuration;
 using Robust.Shared.Input;
+using Robust.Shared.Physics;
 using Robust.Shared.Timing;
 
 namespace Content.Client.UserInterface.Systems.Storage;
@@ -29,6 +31,7 @@ public sealed class StorageUIController : UIController, IOnSystemChanged<Storage
 {
     [Dependency] private readonly IConfigurationManager _configuration = default!;
     [Dependency] private readonly IEntityManager _entity = default!;
+    [Dependency] private readonly IPlayerManager _player = default!;
     [Dependency] private readonly IInputManager _input = default!;
     [Dependency] private readonly IUserInterfaceManager _ui = default!;
     [Dependency] private readonly IViewportUserInterfaceManager _vpUIManager = default!;
@@ -50,12 +53,6 @@ public sealed class StorageUIController : UIController, IOnSystemChanged<Storage
             return;
 
         _container = new HUDStorageContainer(this);
-        if (hudGameplay.Type == HUDGameplayType.Lifeweb)
-            _container.Position = (EyeManager.PixelsPerMeter * 3, EyeManager.PixelsPerMeter * 4);
-        else
-            _container.Position = (0,
-            (EyeManager.PixelsPerMeter * ViewportUIController.ViewportHeight) - (EyeManager.PixelsPerMeter * 3)
-            );
         hud.AddChild(_container);
     }
 
@@ -86,10 +83,78 @@ public sealed class StorageUIController : UIController, IOnSystemChanged<Storage
         if (_container is null)
             return;
 
-        _container.UpdateContainer(nullEnt);
+        var hudGameplay = _vpUIManager.Root as HUDGameplayState;
 
-        if (nullEnt is null)
+        if (nullEnt is not null)
+        {
+            if (!_entity.TryGetComponent<TransformComponent>(nullEnt, out var xform) ||
+                _player.LocalEntity is null) // how?
+                return;
+
+            _container.StorageStyle = HUDGameplayType.Interbay;
+            if (hudGameplay is not null && xform.ParentUid != _player.LocalEntity.Value)
+                _container.StorageStyle = HUDGameplayType.Lifeweb;
+            _container.UpdateContainer(nullEnt);
+
+            // Set position of container. YUeahasas duaus das hduahs
+            // FUCK YUEAH SHIT CODE I LOVBE THAT SHIT CODE FICLK YEAH
+            // AAAAAAAAAAAAAAAAAA!!!!
+            // HAAAARDER HAAAAAAREDR!!!! BREEEEEEEED MEEEEEEEEEE!
+            if (hudGameplay is not null) // Funny content be like
+            {
+                if (hudGameplay.Type == HUDGameplayType.Lifeweb)
+                {
+                    if (xform.ParentUid == _player.LocalEntity.Value)
+                    {
+                        _container.Position = (EyeManager.PixelsPerMeter * 3,
+                            (EyeManager.PixelsPerMeter * ViewportUIController.ViewportHeight) - (EyeManager.PixelsPerMeter * 2) -
+                            _container.Size.Y
+                        );
+                    }
+                    else
+                    {
+                        var centeredPositionX = EyeManager.PixelsPerMeter *
+                            (ViewportUIController.ViewportHeight / 2) - ((_container.Size.X / EyeManager.PixelsPerMeter) / 2);
+                        _container.Position = (centeredPositionX,
+                            ((EyeManager.PixelsPerMeter * (ViewportUIController.ViewportHeight - 2)) - _container.Size.Y)
+                        );
+                    }
+                    //_container.Position = (EyeManager.PixelsPerMeter * 3, EyeManager.PixelsPerMeter * 4);
+                }
+                else
+                {
+                    if (xform.ParentUid == _player.LocalEntity.Value)
+                    {
+                        _container.Position = (0,
+                            (EyeManager.PixelsPerMeter * ViewportUIController.ViewportHeight) - (EyeManager.PixelsPerMeter * 2) -
+                            _container.Size.Y
+                        );
+                    }
+                    else
+                    {
+                        var centeredPositionX = (EyeManager.PixelsPerMeter *
+                            (ViewportUIController.ViewportHeight / 2) - ((_container.Size.X / EyeManager.PixelsPerMeter) / 2)) -
+                            (EyeManager.PixelsPerMeter * 3);
+                        _container.Position = (centeredPositionX,
+                            ((EyeManager.PixelsPerMeter * (ViewportUIController.ViewportHeight - 2)) - _container.Size.Y)
+                        );
+                    }
+                }
+            }
+            else
+            {
+                var centeredPositionX = EyeManager.PixelsPerMeter *
+                    (ViewportUIController.ViewportHeight / 2) - ((_container.Size.X / EyeManager.PixelsPerMeter) / 2);
+                _container.Position = (centeredPositionX,
+                    (EyeManager.PixelsPerMeter * (ViewportUIController.ViewportHeight - 2) - _container.Size.Y)
+                );
+            }
+        }
+        else
+        {
+            _container.UpdateContainer(nullEnt);
             _container.Close();
+        }
     }
 
     /// <summary>

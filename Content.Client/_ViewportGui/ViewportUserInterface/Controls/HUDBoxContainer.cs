@@ -46,8 +46,11 @@ public class HUDBoxContainer : HUDControl
         {
             var currentMaxSize = child.Position + child.Size;
 
-            if (currentMaxSize >= maxSize)
-                maxSize = currentMaxSize;
+            if (currentMaxSize.Y >= maxSize.Y)
+                maxSize.Y = currentMaxSize.Y;
+
+            if (currentMaxSize.X >= maxSize.X)
+                maxSize.X = currentMaxSize.X;
         }
 
         Size = maxSize;
